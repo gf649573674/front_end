@@ -1,0 +1,442 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+	background-color: #f5f7fa;
+	color: #333;
+	line-height: 1.6;
+}
+
+.container {
+	display: grid;
+	grid-template-columns: 1.2fr 1.5fr 1fr;
+	grid-template-rows: auto auto 1fr;
+	gap: 20px;
+	max-width: 1600px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+        /* Header styles */
+.header {
+	grid-column: 1 / -1;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 0;
+	border-bottom: 1px solid #e0e6ed;
+}
+
+.logo {
+	font-size: 24px;
+	font-weight: 700;
+	color: #2c3e50;
+}
+
+.logo i {
+	color: #3498db;
+	margin-right: 10px;
+}
+
+.user-nav {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+.user-nav i {
+	font-size: 20px;
+	color: #7f8c8d;
+	cursor: pointer;
+}
+
+.user-profile {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.user-avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, #3498db, #2c3e50);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	font-weight: bold;
+}
+
+        /* Net worth section */
+.net-worth-card {
+	grid-column: 1 / -1;
+	background: white;
+	border-radius: 16px;
+	padding: 25px;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.net-worth {
+	display: flex;
+	flex-direction: column;
+}
+
+.net-worth-label {
+	font-size: 16px;
+	color: #7f8c8d;
+	margin-bottom: 5px;
+}
+
+.net-worth-value {
+	font-size: 36px;
+	font-weight: 700;
+	color: #2c3e50;
+}
+
+.net-worth-change {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.change-label {
+	font-size: 16px;
+	color: #7f8c8d;
+}
+
+.change-value {
+	font-size: 24px;
+	font-weight: 700;
+	color: #27ae60;
+	margin-top: 5px;
+}
+
+.casm-card {
+	background: linear-gradient(135deg, #3498db, #2980b9);
+	color: white;
+	border-radius: 12px;
+	padding: 15px;
+	width: 180px;
+}
+
+.casm-label {
+	font-size: 14px;
+	margin-bottom: 5px;
+}
+
+.casm-value {
+	font-size: 24px;
+	font-weight: 700;
+}
+
+        /* Account cards */
+.section-title {
+	font-size: 20px;
+	font-weight: 600;
+	color: #2c3e50;
+	margin-bottom: 15px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.section-title i {
+	background: #e3f2fd;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #3498db;
+}
+
+.accounts {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.account-card {
+	background: white;
+	border-radius: 12px;
+	padding: 18px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+	transition: transform 0.3s ease;
+}
+
+.account-card:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+.account-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.account-name {
+	font-weight: 600;
+	color: #2c3e50;
+}
+
+.account-time {
+	font-size: 12px;
+	color: #95a5a6;
+}
+
+.account-amount {
+	font-size: 20px;
+	font-weight: 700;
+	color: #2c3e50;
+	margin-bottom: 5px;
+}
+
+.account-type {
+	font-size: 14px;
+	color: #7f8c8d;
+}
+
+        /* Charty section */
+.market-section {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.market-card {
+	background: white;
+	border-radius: 16px;
+	padding: 20px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.market-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.market-title {
+	font-size: 18px;
+	font-weight: 600;
+	color: #2c3e50;
+}
+
+.market-movers {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 15px;
+	margin-bottom: 25px;
+}
+
+.mover-card {
+	background: #f8f9fa;
+	border-radius: 12px;
+	padding: 15px;
+	text-align: center;
+}
+
+.mover-name {
+	font-size: 14px;
+	color: #7f8c8d;
+	margin-bottom: 10px;
+}
+
+.mover-value {
+	font-size: 18px;
+	font-weight: 700;
+	color: #2c3e50;
+	margin-bottom: 10px;
+}
+
+.mover-change {
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.positive {
+	color: #27ae60;
+}
+
+.negative {
+	color: #e74c3c;
+}
+
+.holdings-card {
+	background: #f8f9fa;
+	border-radius: 12px;
+	padding: 15px;
+	text-align: center;
+	margin-top: 10px;
+}
+
+.holdings-value {
+	font-size: 18px;
+	font-weight: 700;
+	color: #3498db;
+	margin: 5px 0;
+}
+
+.gainers-losers {
+	display: flex;
+	gap: 15px;
+	margin-top: 15px;
+}
+
+.gainers, .losers {
+	flex: 1;
+	background: white;
+	border-radius: 12px;
+	padding: 15px;
+}
+
+.gl-title {
+	font-size: 16px;
+	font-weight: 600;
+	margin-bottom: 15px;
+	color: #2c3e50;
+}
+
+.gl-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.gl-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #f0f2f5;
+}
+
+.gl-name {
+	font-size: 14px;
+	color: #2c3e50;
+}
+
+.gl-value {
+	font-weight: 600;
+}
+
+        /* Insights section */
+.insights-section {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.insights-card {
+	background: white;
+	border-radius: 16px;
+	padding: 20px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.insight-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 0;
+	border-bottom: 1px solid #f0f2f5;
+}
+
+.insight-row:last-child {
+	border-bottom: none;
+}
+
+.insight-title {
+	font-size: 16px;
+	color: #2c3e50;
+}
+
+.insight-value {
+	font-size: 18px;
+	font-weight: 700;
+	color: #2c3e50;
+}
+
+.progress-container {
+	margin: 15px 0;
+}
+
+.progress-label {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 5px;
+	font-size: 14px;
+	color: #7f8c8d;
+}
+
+.progress-bar {
+	height: 8px;
+	background: #ecf0f1;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.progress-fill {
+	height: 100%;
+	background: #e74c3c;
+	border-radius: 4px;
+	width: 8.64%;
+}
+
+.fee-card {
+	background: #fff8e1;
+	border-left: 4px solid #ffc107;
+	border-radius: 0 8px 8px 0;
+	padding: 15px;
+	margin-top: 20px;
+}
+
+.fee-text {
+	font-size: 14px;
+	color: #2c3e50;
+	margin-bottom: 5px;
+}
+
+.fee-amount {
+	font-weight: 700;
+	color: #e74c3c;
+}
+
+        /* Chart container */
+.chart-container {
+	height: 200px;
+	margin-top: 20px;
+}
+
+        /* Responsive adjustments */
+@media (max-width: 1200px) {
+	.container {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media (max-width: 768px) {
+	.container {
+		grid-template-columns: 1fr;
+	}
+
+	.gainers-losers {
+		flex-direction: column;
+	}
+
+	.market-movers {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}

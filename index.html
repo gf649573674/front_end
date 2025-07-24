@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投资组合管理系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="./chart.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+    
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>PortfolioManager
+            </div>
+            <div class="user-nav">
+                <i class="fas fa-bell"></i>
+                <i class="fas fa-cog"></i>
+                <div class="user-profile">
+                    <div class="user-avatar">JS</div>
+                    <span>John Smith</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Net Worth Section -->
+        <div class="net-worth-card">
+            <div class="net-worth">
+                <div class="net-worth-label">NET WORTH</div>
+                <div class="net-worth-value">$2,317,371.38</div>
+            </div>
+            <div class="net-worth-change">
+                <div class="change-label">LAST 30 DAYS</div>
+                <div class="change-value">+$138,884</div>
+            </div>
+            <div class="casm-card">
+                <div class="casm-label">CASM</div>
+                <div class="casm-value">$4,601.78</div>
+            </div>
+        </div>
+
+        <!-- Left Column - Accounts -->
+        <div class="accounts">
+            <h2 class="section-title">
+                <i class="fas fa-wallet"></i>CASH
+            </h2>
+            
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-name">Fidelity Cash</div>
+                    <div class="account-time">13 mins ago</div>
+                </div>
+                <div class="account-amount">$2,291.90</div>
+                <div class="account-type">Cash Management</div>
+            </div>
+            
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-name">Wells Fargo</div>
+                    <div class="account-time">13 mins ago</div>
+                </div>
+                <div class="account-amount">$300.13</div>
+                <div class="account-type">Checking</div>
+            </div>
+            
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-name">Wells Fargo</div>
+                    <div class="account-time">13 mins ago</div>
+                </div>
+                <div class="account-amount">$2,000.87</div>
+                <div class="account-type">Savings</div>
+            </div>
+            
+            <h2 class="section-title" style="margin-top: 25px;">
+                <i class="fas fa-chart-pie"></i>INVESTMENT
+            </h2>
+            
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-name">Beneke Fabricators</div>
+                    <div class="account-time">11 mins ago</div>
+                </div>
+                <div class="account-amount">$16,231.00</div>
+                <div class="account-type">Styler White 401k</div>
+            </div>
+            
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-name">Fidelity</div>
+                    <div class="account-time">13 mins ago</div>
+                </div>
+                <div class="account-amount">$53,165.79</div>
+                <div class="account-type">Fidelity Brokerage</div>
+            </div>
+            
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-name">Madrigal Electromotive</div>
+                    <div class="account-time">10/8/12</div>
+                </div>
+                <div class="account-amount">$16,838.00</div>
+                <div class="account-type">Water White 401k</div>
+            </div>
+            
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-name">Penthing</div>
+                    <div class="account-time">9 mins ago</div>
+                </div>
+                <div class="account-amount">$455,191.03</div>
+                <div class="account-type">IRA 1</div>
+            </div>
+            
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-name">Penthing</div>
+                    <div class="account-time">9 mins ago</div>
+                </div>
+                <div class="account-amount">$50,472.35</div>
+                <div class="account-type">IRA 2</div>
+            </div>
+            
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-name">Penthing</div>
+                    <div class="account-time">9 mins ago</div>
+                </div>
+                <div class="account-amount">$103,144.46</div>
+                <div class="account-type">Taxable</div>
+            </div>
+            
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-name">Seaf Goodman And ...</div>
+                    <div class="account-time">11 mins ago</div>
+                </div>
+                <div class="account-amount">$75,001.98</div>
+                <div class="account-type">Seaf Goodman 401k</div>
+            </div>
+            
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-name">Stock Options - Paed...</div>
+                    <div class="account-time">11 mins ago</div>
+                </div>
+                <div class="account-amount">$31,715.00</div>
+                <div class="account-type">Pensions</div>
+            </div>
+            
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-name">Stock Options - Single</div>
+                    <div class="account-time"></div>
+                </div>
+                <div class="account-amount">$3,205.58</div>
+                <div class="account-type"></div>
+            </div>
+        </div>
+
+        <!-- Middle Column - Market Data -->
+        <div class="market-section">
+            <div class="market-card">
+                <div class="market-header">
+                    <div class="market-title">Market Movers</div>
+                </div>
+                
+                <div class="market-movers">
+                    <div class="mover-card">
+                        <div class="mover-name">TOOKY</div>
+                        <div class="mover-value">$3,482</div>
+                        <div class="mover-change positive">0.65%</div>
+                    </div>
+                    <div class="mover-card">
+                        <div class="mover-name">S&P 500</div>
+                        <div class="mover-value">4,890.18</div>
+                        <div class="mover-change negative">-0.72%</div>
+                    </div>
+                    <div class="mover-card">
+                        <div class="mover-name">DOW JONES</div>
+                        <div class="mover-value">38,654.32</div>
+                        <div class="mover-change positive">0.14%</div>
+                    </div>
+                    <div class="mover-card">
+                        <div class="mover-name">10-TR BOND</div>
+                        <div class="mover-value">2,105.76</div>
+                        <div class="mover-change negative">-2.96%</div>
+                    </div>
+                </div>
+                
+                <div class="holdings-card">
+                    <div>Your Holdings</div>
+                    <div class="holdings-value">0.14%</div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="marketChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="market-card">
+                <div class="gainers-losers">
+                    <div class="gainers">
+                        <div class="gl-title">YOUR GAINERS</div>
+                        <div class="gl-list">
+                            <div class="gl-item">
+                                <div class="gl-name">Apple Inc</div>
+                                <div class="gl-value positive">2.53%</div>
+                            </div>
+                            <div class="gl-item">
+                                <div class="gl-name">Flattenergy Corp</div>
+                                <div class="gl-value positive">1.66%</div>
+                            </div>
+                            <div class="gl-item">
+                                <div class="gl-name">Duke Energy Corp</div>
+                                <div class="gl-value positive">1.42%</div>
+                            </div>
+                            <div class="gl-item">
+                                <div class="gl-name">Northeast Utilities</div>
+                                <div class="gl-value positive">0.85%</div>
+                            </div>
+                            <div class="gl-item">
+                                <div class="gl-name">ITT Educational Services Inc</div>
+                                <div class="gl-value positive">0.88%</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="losers">
+                        <div class="gl-title">YOUR LOSERS</div>
+                        <div class="gl-list">
+                            <div class="gl-item">
+                                <div class="gl-name">Harris Tester Supermarkets Inc</div>
+                                <div class="gl-value negative">-2.61%</div>
+                            </div>
+                            <div class="gl-item">
+                                <div class="gl-name">Guitport Energy Corp</div>
+                                <div class="gl-value negative">-2.01%</div>
+                            </div>
+                            <div class="gl-item">
+                                <div class="gl-name">Microsoft Corp</div>
+                                <div class="gl-value negative">-1.66%</div>
+                            </div>
+                            <div class="gl-item">
+                                <div class="gl-name">Wells Fargo & Co</div>
+                                <div class="gl-value negative">-1.57%</div>
+                            </div>
+                            <div class="gl-item">
+                                <div class="gl-name">Eastman Chemical Co</div>
+                                <div class="gl-value negative">-1.50%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Insights -->
+        <div class="insights-section">
+            <div class="insights-card">
+                <div class="insight-row">
+                    <div class="insight-title">INSIDE</div>
+                    <div class="insight-value">$18,685</div>
+                </div>
+                <div class="insight-row">
+                    <div class="insight-title">SPENDING</div>
+                    <div class="insight-value">$42,500</div>
+                </div>
+            </div>
+            
+            <div class="insights-card">
+                <h3>Insights</h3>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>International Stocks</span>
+                        <span>-8.64%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 15px; font-size: 14px; color: #7f8c8d;">
+                    Compared to our baseline portfolio, you are underweight in: International Stocks by (8.64%).
+                </p>
+                
+                <div class="fee-card">
+                    <p class="fee-text">
+                        You are currently paying over <span class="fee-amount">$340.54</span> per year in fees for mutual funds and ETFs.
+                    </p>
+                    <p class="fee-text">
+                        You are projected to pay over <span class="fee-amount">$130.72</span> in 30 years in management fees for mutual funds and ETFs.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="insights-card">
+                <h3>Asset Allocation</h3>
+                <div class="chart-container">
+                    <canvas id="allocationChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./marketChart.js"></script>
+</body>
+</html>
