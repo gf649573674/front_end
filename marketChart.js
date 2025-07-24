@@ -52,11 +52,11 @@ const allocChart = new Chart(allocCtx, {
         datasets: [{
             data: [65, 12, 15, 5, 3],
             backgroundColor: [
-                '#3498db',
-                '#2ecc71',
-                '#9b59b6',
-                '#f1c40f',
-                '#e74c3c'
+                '#3A6FB0',
+                '#5B8FF9',
+                '#8C6AC4',
+                '#B085D6',
+                '#D3A8F0'
             ],
             borderWidth: 0
         }]
