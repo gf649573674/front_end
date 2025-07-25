@@ -214,7 +214,7 @@
             display: flex;
             flex-direction: column;
         }
-
+        
         .change-label {
             font-size: 13px;
             color: #7f8c8d;
@@ -332,7 +332,27 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
             transition: transform 0.3s ease;
         }
-        
+        .cash-name{
+            font-size: 15px;
+            font-weight: 700;
+            color: #071c30;
+            margin-bottom: 4px;
+        }
+
+        .cash-card{
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .cash-amount{
+            font-size: 25px;
+            font-weight: 700;
+            color: #e41414;
+            margin-bottom: 4px;
+        }
 
         .account-card:hover {
             transform: translateY(-3px);
@@ -681,17 +701,28 @@
 
         <!-- 左侧账户列表 -->
         <div class="accounts">
-            <!-- CASH Section -->
-            <div class="section-header" data-target="cash-group">
+            <!-- CASH Data -->
+            <div class ="cash-card">
+                <div class="cash-name">
+                    <i class="fas fa-wallet"></i>
+                    Cash
+                </div>    
+                <div class="cash-amount">
+                    $2,291.90
+                </div>
+
+            </div>
+            <!-- Stocks Section -->
+            <div class="section-header" data-target="Stocks-group">
                 <div class="section-title">
-                    <i class="fas fa-wallet"></i>CASH
+                    <i class="fas fa-chart-pie"></i>Stocks
                 </div>
                 <div class="section-toggle">
                     <i class="fas fa-chevron-down"></i>
                 </div>
             </div>
             
-            <div class="account-group" id="cash-group">
+            <div class="account-group" id="Stocks-group">
                 <div class="account-card">
                     <div class="account-header">
                         <div class="account-name">Fidelity Cash</div>
@@ -720,17 +751,17 @@
                 </div>
             </div>
             
-            <!-- INVESTMENT Section -->
-            <div class="section-header" data-target="investment-group">
+            <!-- Funds Section -->
+            <div class="section-header" data-target="Funds-group">
                 <div class="section-title">
-                    <i class="fas fa-chart-pie"></i>INVESTMENT
+                    <i class="fas fa-chart-pie"></i>Funds
                 </div>
                 <div class="section-toggle">
                     <i class="fas fa-chevron-down"></i>
                 </div>
             </div>
             
-            <div class="account-group" id="investment-group">
+            <div class="account-group" id="Funds-group">
                 <div class="account-card">
                     <div class="account-header">
                         <div class="account-name">Beneke Fabricators</div>
@@ -793,37 +824,20 @@
                     <div class="account-amount">$75,001.98</div>
                     <div class="account-type">Seaf Goodman 401k</div>
                 </div>
-                
-                <div class="account-card">
-                    <div class="account-header">
-                        <div class="account-name">Stock Options - Paed...</div>
-                        <div class="account-time">11 mins ago</div>
-                    </div>
-                    <div class="account-amount">$31,715.00</div>
-                    <div class="account-type">Pensions</div>
-                </div>
-                
-                <div class="account-card">
-                    <div class="account-header">
-                        <div class="account-name">Stock Options - Single</div>
-                        <div class="account-time"></div>
-                    </div>
-                    <div class="account-amount">$3,205.58</div>
-                    <div class="account-type"></div>
-                </div>
+
             </div>
-            <div class="section-header" data-target="Funds-group">
+            <div class="section-header" data-target="Bonds-group">
                 <div class="section-title">
-                    <i class="fas fa-chart-pie"></i>Funds
+                    <i class="fas fa-chart-pie"></i>Bonds
                 </div>
                 <div class="section-toggle">
                     <i class="fas fa-chevron-down"></i>
                 </div>
             </div>
-            <div class="account-group" id="Funds-group">
+            <div class="account-group" id="Bonds-group">
                 <div class="account-card">
                     <div class="account-header">
-                        <div class="account-name">Funds Options - Single</div>
+                        <div class="account-name">Bonds Options - Single</div>
                         <div class="account-time"></div>
                     </div>
                     <div class="account-amount">$3,205.58</div>
