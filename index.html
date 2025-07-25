@@ -5,9 +5,623 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>投资组合管理系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="./chart.js"></script>
-    <link rel="stylesheet" href="./css/styles.css">
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 0.8fr 1.7fr 1fr; /* 调整列宽比例 */
+            grid-template-rows: auto auto 1fr;
+            gap: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header styles */
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .logo i {
+            color: #3498db;
+            margin-right: 10px;
+        }
+
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-nav i {
+            font-size: 20px;
+            color: #7f8c8d;
+            cursor: pointer;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* 优化后的利润卡片样式 */
+        .profit-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            width: 240px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+        }
+
+        .profit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .profit-title {
+            font-size: 15px;
+            color: #7f8c8d;
+        }
+
+        .profit-period {
+            font-size: 13px;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        .profit-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 6px;
+        }
+
+        .profit-comparison {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
+        .profit-change {
+            font-size: 16px;
+            font-weight: 600;
+            color: #27ae60;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .profit-change.negative {
+            color: #e74c3c;
+        }
+
+        .profit-vs {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .profit-percent {
+            background: rgba(39, 174, 96, 0.15);
+            color: #27ae60;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 4px;
+        }
+
+        .profit-percent.negative {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+        }
+
+        /* 优化净值卡片布局 */
+        .net-worth-card {
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .net-worth-section {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .net-worth {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 12px;
+        }
+
+        .net-worth-label {
+            font-size: 15px;
+            color: #7f8c8d;
+            margin-bottom: 4px;
+        }
+
+        .net-worth-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .net-worth-change {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .change-label {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .change-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #27ae60;
+            margin-top: 4px;
+        }
+
+        .casm-card {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border-radius: 12px;
+            padding: 15px;
+            width: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .casm-label {
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .casm-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        /* 左侧账户区域 */
+        .accounts {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* 修复section-header宽度问题 */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 15px; /* 增加水平内边距 */
+            background-color: white;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            width: 100%; /* 确保宽度占满容器 */
+            min-width: 250px; /* 设置最小宽度 */
+        }
+
+        .section-header:hover {
+            background-color: #f8f9fa;
+        }
+
+        .section-header.active {
+            background-color: #e3f2fd;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap; /* 防止文字换行 */
+            overflow: hidden;
+            text-overflow: ellipsis; /* 文字过长时显示省略号 */
+        }
+
+        .section-title i {
+            background: #e3f2fd;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3498db;
+            flex-shrink: 0; /* 防止图标缩小 */
+        }
+
+        .section-toggle {
+            transition: transform 0.3s ease;
+            flex-shrink: 0; /* 防止箭头图标缩小 */
+        }
+
+        .section-header.active .section-toggle {
+            transform: rotate(180deg);
+        }
+
+        .account-group {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .account-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease;
+        }
+        
+
+        .account-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .account-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+        .account-time {
+            font-size: 11px;
+            color: #95a5a6;
+            flex-shrink: 0;
+        }
+
+        .account-amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .account-type {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        /* 修复market-card宽度问题 */
+        .market-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%; /* 确保宽度为100% */
+        }
+
+        .market-card {
+            background: white;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            width: 100%; /* 确保宽度为100% */
+            box-sizing: border-box; /* 防止padding影响宽度 */
+        }
+
+        .market-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .market-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .market-movers {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .mover-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .mover-name {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+
+        .mover-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .mover-change {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .positive {
+            color: #27ae60;
+        }
+
+        .negative {
+            color: #e74c3c;
+        }
+
+        .holdings-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .holdings-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #3498db;
+            margin: 4px 0;
+        }
+
+        .gainers-losers {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .gainers, .losers {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .gl-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2c3e50;
+        }
+
+        .gl-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .gl-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        .gl-name {
+            font-size: 13px;
+            color: #2c3e50;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+        .gl-value {
+            font-weight: 600;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .insights-section {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .insights-card {
+            background: white;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .insight-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        .insight-row:last-child {
+            border-bottom: none;
+        }
+
+        .insight-title {
+            font-size: 15px;
+            color: #2c3e50;
+        }
+
+        .insight-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .progress-container {
+            margin: 12px 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #e74c3c;
+            border-radius: 4px;
+            width: 8.64%;
+        }
+
+        .fee-card {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            border-radius: 0 8px 8px 0;
+            padding: 12px;
+            margin-top: 15px;
+        }
+
+        .fee-text {
+            font-size: 13px;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .fee-amount {
+            font-weight: 700;
+            color: #e74c3c;
+        }
+
+        .chart-container {
+            height: 180px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .gainers-losers {
+                flex-direction: column;
+            }
+            .market-movers {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .net-worth-card {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .profit-card, .net-worth-section, .casm-card {
+                width: 100%;
+            }
+            .section-header {
+                min-width: auto; /* 小屏幕上去除最小宽度 */
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -26,142 +640,200 @@
             </div>
         </div>
 
-        <!-- Net Worth Section -->
+        <!-- 净值卡片区域 -->
         <div class="net-worth-card">
-            <div class="net-worth">
-                <div class="net-worth-label">NET WORTH</div>
-                <div class="net-worth-value">$2,317,371.38</div>
+            <!-- 净值部分 -->
+            <div class="net-worth-section">
+                <div class="net-worth">
+                    <div class="net-worth-label">NET WORTH</div>
+                    <div class="net-worth-value">$2,317,371.38</div>
+                </div>
+                <div class="net-worth-change">
+                    <div class="change-label">LAST 30 DAYS</div>
+                    <div class="change-value">+$138,884</div>
+                </div>
             </div>
-            <div class="net-worth-change">
-                <div class="change-label">LAST 30 DAYS</div>
-                <div class="change-value">+$138,884</div>
+            
+            <!-- 优化后的利润卡片 -->
+            <div class="profit-card">
+                <div class="profit-header">
+                    <div class="profit-title">TOTAL PROFIT</div>
+                    <div class="profit-period">Last 90 days</div>
+                </div>
+                <div class="profit-value">$89.39K</div>
+                <div class="profit-comparison">
+                    <div class="profit-change">
+                        <i class="fas fa-arrow-up"></i>$9.53K
+                    </div>
+                    <div class="profit-vs">vs prev. 90 days</div>
+                </div>
+                <div class="profit-percent">
+                    <i class="fas fa-arrow-up"></i>+5.6%
+                </div>
             </div>
+            
+            <!-- CASM卡片 -->
             <div class="casm-card">
                 <div class="casm-label">CASM</div>
                 <div class="casm-value">$4,601.78</div>
             </div>
         </div>
 
-        <!-- Left Column - Accounts -->
+        <!-- 左侧账户列表 -->
         <div class="accounts">
-            <h2 class="section-title">
-                <i class="fas fa-wallet"></i>CASH
-            </h2>
-            
-            <div class="account-card">
-                <div class="account-header">
-                    <div class="account-name">Fidelity Cash</div>
-                    <div class="account-time">13 mins ago</div>
+            <!-- CASH Section -->
+            <div class="section-header" data-target="cash-group">
+                <div class="section-title">
+                    <i class="fas fa-wallet"></i>CASH
                 </div>
-                <div class="account-amount">$2,291.90</div>
-                <div class="account-type">Cash Management</div>
+                <div class="section-toggle">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
             </div>
             
-            <div class="account-card">
-                <div class="account-header">
-                    <div class="account-name">Wells Fargo</div>
-                    <div class="account-time">13 mins ago</div>
+            <div class="account-group" id="cash-group">
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Fidelity Cash</div>
+                        <div class="account-time">13 mins ago</div>
+                    </div>
+                    <div class="account-amount">$2,291.90</div>
+                    <div class="account-type">Cash Management</div>
                 </div>
-                <div class="account-amount">$300.13</div>
-                <div class="account-type">Checking</div>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Wells Fargo</div>
+                        <div class="account-time">13 mins ago</div>
+                    </div>
+                    <div class="account-amount">$300.13</div>
+                    <div class="account-type">Checking</div>
+                </div>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Wells Fargo</div>
+                        <div class="account-time">13 mins ago</div>
+                    </div>
+                    <div class="account-amount">$2,000.87</div>
+                    <div class="account-type">Savings</div>
+                </div>
             </div>
             
-            <div class="account-card">
-                <div class="account-header">
-                    <div class="account-name">Wells Fargo</div>
-                    <div class="account-time">13 mins ago</div>
+            <!-- INVESTMENT Section -->
+            <div class="section-header" data-target="investment-group">
+                <div class="section-title">
+                    <i class="fas fa-chart-pie"></i>INVESTMENT
                 </div>
-                <div class="account-amount">$2,000.87</div>
-                <div class="account-type">Savings</div>
+                <div class="section-toggle">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
             </div>
             
-            <h2 class="section-title" style="margin-top: 25px;">
-                <i class="fas fa-chart-pie"></i>INVESTMENT
-            </h2>
-            
-            <div class="account-card">
-                <div class="account-header">
-                    <div class="account-name">Beneke Fabricators</div>
-                    <div class="account-time">11 mins ago</div>
+            <div class="account-group" id="investment-group">
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Beneke Fabricators</div>
+                        <div class="account-time">11 mins ago</div>
+                    </div>
+                    <div class="account-amount">$16,231.00</div>
+                    <div class="account-type">Styler White 401k</div>
                 </div>
-                <div class="account-amount">$16,231.00</div>
-                <div class="account-type">Styler White 401k</div>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Fidelity</div>
+                        <div class="account-time">13 mins ago</div>
+                    </div>
+                    <div class="account-amount">$53,165.79</div>
+                    <div class="account-type">Fidelity Brokerage</div>
+                </div>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Madrigal Electromotive</div>
+                        <div class="account-time">10/8/12</div>
+                    </div>
+                    <div class="account-amount">$16,838.00</div>
+                    <div class="account-type">Water White 401k</div>
+                </div>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Penthing</div>
+                        <div class="account-time">9 mins ago</div>
+                    </div>
+                    <div class="account-amount">$455,191.03</div>
+                    <div class="account-type">IRA 1</div>
+                </div>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Penthing</div>
+                        <div class="account-time">9 mins ago</div>
+                    </div>
+                    <div class="account-amount">$50,472.35</div>
+                    <div class="account-type">IRA 2</div>
+                </div>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Penthing</div>
+                        <div class="account-time">9 mins ago</div>
+                    </div>
+                    <div class="account-amount">$103,144.46</div>
+                    <div class="account-type">Taxable</div>
+                </div>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Seaf Goodman And ...</div>
+                        <div class="account-time">11 mins ago</div>
+                    </div>
+                    <div class="account-amount">$75,001.98</div>
+                    <div class="account-type">Seaf Goodman 401k</div>
+                </div>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Stock Options - Paed...</div>
+                        <div class="account-time">11 mins ago</div>
+                    </div>
+                    <div class="account-amount">$31,715.00</div>
+                    <div class="account-type">Pensions</div>
+                </div>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Stock Options - Single</div>
+                        <div class="account-time"></div>
+                    </div>
+                    <div class="account-amount">$3,205.58</div>
+                    <div class="account-type"></div>
+                </div>
             </div>
-            
-            <div class="account-card">
-                <div class="account-header">
-                    <div class="account-name">Fidelity</div>
-                    <div class="account-time">13 mins ago</div>
+            <div class="section-header" data-target="Funds-group">
+                <div class="section-title">
+                    <i class="fas fa-chart-pie"></i>Funds
                 </div>
-                <div class="account-amount">$53,165.79</div>
-                <div class="account-type">Fidelity Brokerage</div>
+                <div class="section-toggle">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
             </div>
-            
-            <div class="account-card">
-                <div class="account-header">
-                    <div class="account-name">Madrigal Electromotive</div>
-                    <div class="account-time">10/8/12</div>
+            <div class="account-group" id="Funds-group">
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Funds Options - Single</div>
+                        <div class="account-time"></div>
+                    </div>
+                    <div class="account-amount">$3,205.58</div>
+                    <div class="account-type"></div>
                 </div>
-                <div class="account-amount">$16,838.00</div>
-                <div class="account-type">Water White 401k</div>
-            </div>
-            
-            <div class="account-card">
-                <div class="account-header">
-                    <div class="account-name">Penthing</div>
-                    <div class="account-time">9 mins ago</div>
-                </div>
-                <div class="account-amount">$455,191.03</div>
-                <div class="account-type">IRA 1</div>
-            </div>
-            
-            <div class="account-card">
-                <div class="account-header">
-                    <div class="account-name">Penthing</div>
-                    <div class="account-time">9 mins ago</div>
-                </div>
-                <div class="account-amount">$50,472.35</div>
-                <div class="account-type">IRA 2</div>
-            </div>
-            
-            <div class="account-card">
-                <div class="account-header">
-                    <div class="account-name">Penthing</div>
-                    <div class="account-time">9 mins ago</div>
-                </div>
-                <div class="account-amount">$103,144.46</div>
-                <div class="account-type">Taxable</div>
-            </div>
-            
-            <div class="account-card">
-                <div class="account-header">
-                    <div class="account-name">Seaf Goodman And ...</div>
-                    <div class="account-time">11 mins ago</div>
-                </div>
-                <div class="account-amount">$75,001.98</div>
-                <div class="account-type">Seaf Goodman 401k</div>
-            </div>
-            
-            <div class="account-card">
-                <div class="account-header">
-                    <div class="account-name">Stock Options - Paed...</div>
-                    <div class="account-time">11 mins ago</div>
-                </div>
-                <div class="account-amount">$31,715.00</div>
-                <div class="account-type">Pensions</div>
-            </div>
-            
-            <div class="account-card">
-                <div class="account-header">
-                    <div class="account-name">Stock Options - Single</div>
-                    <div class="account-time"></div>
-                </div>
-                <div class="account-amount">$3,205.58</div>
-                <div class="account-type"></div>
             </div>
         </div>
+        
 
-        <!-- Middle Column - Market Data -->
+        <!-- 中间市场数据 -->
         <div class="market-section">
             <div class="market-card">
                 <div class="market-header">
@@ -258,7 +930,7 @@
             </div>
         </div>
 
-        <!-- Right Column - Insights -->
+        <!-- 右侧洞察部分 -->
         <div class="insights-section">
             <div class="insights-card">
                 <div class="insight-row">
@@ -307,6 +979,107 @@
         </div>
     </div>
 
-    <script src="./marketChart.js"></script>
+    <script>
+        // Initialize market chart
+        const marketCtx = document.getElementById('marketChart').getContext('2d');
+        const marketChart = new Chart(marketCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Portfolio Value',
+                    data: [2100000, 2150000, 2170000, 2220000, 2250000, 2300000, 2317000],
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                    borderWidth: 3,
+                    pointRadius: 0,
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + (value / 1000000).toFixed(1) + 'M';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Initialize allocation chart
+        const allocCtx = document.getElementById('allocationChart').getContext('2d');
+        const allocChart = new Chart(allocCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['US Stocks', 'International', 'Bonds', 'Cash', 'Alternatives'],
+                datasets: [{
+                    data: [65, 12, 15, 5, 3],
+                    backgroundColor: [
+                        '#3498db',
+                        '#2ecc71',
+                        '#9b59b6',
+                        '#f1c40f',
+                        '#e74c3c'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+
+        // Collapsible sections functionality
+        document.querySelectorAll('.section-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const targetGroup = document.getElementById(targetId);
+                
+                // Toggle active class on header
+                this.classList.toggle('active');
+                
+                // Toggle display of account group
+                if (targetGroup.style.display === 'flex') {
+                    targetGroup.style.display = 'none';
+                } else {
+                    targetGroup.style.display = 'flex';
+                }
+            });
+        });
+
+        // Add hover effects to account cards
+        document.querySelectorAll('.account-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+    </script>
 </body>
 </html>
