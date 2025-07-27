@@ -255,84 +255,8 @@
             gap: 15px;
         }
 
-        /* 修复section-header宽度问题 */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            padding: 10px 15px; /* 增加水平内边距 */
-            background-color: white;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
-            transition: all 0.3s ease;
-            width: 100%; /* 确保宽度占满容器 */
-            min-width: 250px; /* 设置最小宽度 */
-        }
-
-        .section-header:hover {
-            background-color: #f8f9fa;
-        }
-
-        .section-header.active {
-            background-color: #e3f2fd;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #2c3e50;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            white-space: nowrap; /* 防止文字换行 */
-            overflow: hidden;
-            text-overflow: ellipsis; /* 文字过长时显示省略号 */
-        }
-
-        .section-title i {
-            background: #e3f2fd;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #3498db;
-            flex-shrink: 0; /* 防止图标缩小 */
-        }
-
-        .section-toggle {
-            transition: transform 0.3s ease;
-            flex-shrink: 0; /* 防止箭头图标缩小 */
-        }
-
-        .section-header.active .section-toggle {
-            transform: rotate(180deg);
-        }
-
-        .account-group {
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 15px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .account-card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            transition: transform 0.3s ease;
-        }
-                .investment-form {
+        /* 添加数据库内容框*/
+        .investment-form {
             background: white;
             border-radius: 12px;
             padding: 15px;
@@ -423,7 +347,110 @@
             color: #e74c3c;
             display: block;
         }
-        /* 左侧现金表单样式 */
+
+        /* 修复section-header宽度问题 */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 15px; /* 增加水平内边距 */
+            background-color: white;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+            width: 100%; /* 确保宽度占满容器 */
+            min-width: 250px; /* 设置最小宽度 */
+        }
+
+        .section-header:hover {
+            background-color: #f8f9fa;
+        }
+
+        .section-header.active {
+            background-color: #e3f2fd;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap; /* 防止文字换行 */
+            overflow: hidden;
+            text-overflow: ellipsis; /* 文字过长时显示省略号 */
+        }
+
+        .section-title i {
+            background: #e3f2fd;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3498db;
+            flex-shrink: 0; /* 防止图标缩小 */
+        }
+
+        .section-toggle {
+            transition: transform 0.3s ease;
+            flex-shrink: 0; /* 防止箭头图标缩小 */
+        }
+
+        .section-header.active .section-toggle {
+            transform: rotate(180deg);
+        }
+
+        .account-group {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .account-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .account-card.selected {
+            background: #e3f2fd;
+            border: 2px solid #3498db;
+            transform: translateY(-3px);
+        }
+        
+        .account-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .account-card.selected::after {
+            transform: translateY(0);
+        }
+        
         .cash-name{
             font-size: 15px;
             font-weight: 700;
@@ -522,6 +549,17 @@
             font-size: 17px;
             font-weight: 600;
             color: #2c3e50;
+        }
+        
+        .chart-subtitle {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 4px;
+        }
+        
+        .chart-subtitle .account-name {
+            font-weight: 700;
+            color: #3498db;
         }
 
         .market-movers {
@@ -713,6 +751,60 @@
             height: 180px;
             margin-top: 15px;
         }
+        
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .account-card.loading .loading-overlay {
+            opacity: 1;
+        }
+        
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .chart-container .chart-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .chart-container.loading .chart-overlay {
+            opacity: 1;
+        }
 
         @media (max-width: 1200px) {
             .container {
@@ -802,64 +894,61 @@
         <!-- 左侧账户列表 -->
         <div class="accounts">
             <!-- CASH Data -->
-            <h3><i class="fas fa-plus-circle"></i> 新增投资</h3>
-            <div class="form-group">
-                <label for="symbol">代码(Symbol)</label>
-                <input type="text" id="symbol" name="symbol" placeholder="例如: AAPL" required>
-            </div>
-        
-            <div class="form-group">
-                <label for="name">名称(Name)</label>
-                <input type="text" id="name" name="name" placeholder="例如: Apple Inc." required>
-            </div>
-        
-            <div class="form-row">
+            <div class ="cash-card">
+                <h3><i class="fas fa-plus-circle"></i> 新增投资</h3>
                 <div class="form-group">
-                    <label for="type">类型(Type)</label>
-                    <select id="type" name="type" required>
-                        <option value="">选择类型</option>
-                        <option value="Stock">股票</option>
-                        <option value="Bond">债券</option>
-                        <option value="ETF">ETF</option>
-                        <option value="Mutual Fund">共同基金</option>
-                        <option value="Index Fund">指数基金</option>
-                        <option value="REIT">房地产信托</option>
-                    </select>
+                    <label for="symbol">代码(Symbol)</label>
+                    <input type="text" id="symbol" name="symbol" placeholder="例如: AAPL" required>
                 </div>
+        
+                <div class="form-group">
+                    <label for="name">名称(Name)</label>
+                    <input type="text" id="name" name="name" placeholder="例如: Apple Inc." required>
+                </div>
+        
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="type">类型(Type)</label>
+                        <select id="type" name="type" required>
+                            <option value="">选择类型</option>
+                            <option value="Stock">股票</option>
+                            <option value="Bond">债券</option>
+                            <option value="Fund">基金</option>
+                        </select>
+                    </div>
             
+                    <div class="form-group">
+                        <label for="currency">货币(Currency)</label>
+                        <select id="currency" name="currency" required>
+                            <option value="">选择货币</option>
+                            <option value="USD">美元 (USD)</option>
+                            <option value="EUR">欧元 (EUR)</option>
+                            <option value="JPY">日元 (JPY)</option>
+                            <option value="GBP">英镑 (GBP)</option>
+                            <option value="CNY">人民币 (CNY)</option>
+                        </select>
+                    </div>
+                </div>
+        
                 <div class="form-group">
-                    <label for="currency">货币(Currency)</label>
-                    <select id="currency" name="currency" required>
-                        <option value="">选择货币</option>
-                        <option value="USD">美元 (USD)</option>
-                        <option value="EUR">欧元 (EUR)</option>
-                        <option value="JPY">日元 (JPY)</option>
-                        <option value="GBP">英镑 (GBP)</option>
-                        <option value="CNY">人民币 (CNY)</option>
+                    <label for="exchange">交易所(Exchange)</label>
+                    <select id="exchange" name="exchange" required>
+                        <option value="">选择交易所</option>
+                        <option value="NYSE">纽约证券交易所 (NYSE)</option>
+                        <option value="NASDAQ">纳斯达克 (NASDAQ)</option>
+                        <option value="SSE">上海证券交易所 (SSE)</option>
+                        <option value="HKEX">香港交易所 (HKEX)</option>
+                        <option value="LSE">伦敦证券交易所 (LSE)</option>
+                        <option value="TSE">东京证券交易所 (TSE)</option>
                     </select>
                 </div>
+        
+                <button class="submit-btn" onclick="submitInvestment()">
+                    <i class="fas fa-plus"></i> 添加投资
+                </button>
+        
+                <div id="form-message" class="form-message"></div>
             </div>
-        
-            <div class="form-group">
-                <label for="exchange">交易所(Exchange)</label>
-                <select id="exchange" name="exchange" required>
-                    <option value="">选择交易所</option>
-                    <option value="NYSE">纽约证券交易所 (NYSE)</option>
-                    <option value="NASDAQ">纳斯达克 (NASDAQ)</option>
-                    <option value="SSE">上海证券交易所 (SSE)</option>
-                    <option value="HKEX">香港交易所 (HKEX)</option>
-                    <option value="LSE">伦敦证券交易所 (LSE)</option>
-                    <option value="TSE">东京证券交易所 (TSE)</option>
-                </select>
-            </div>
-        
-            <button class="submit-btn" onclick="submitInvestment()">
-                <i class="fas fa-plus"></i> 添加投资
-            </button>
-        
-            <div id="form-message" class="form-message"></div>
-
-
             <!-- Stocks Section -->
             <div class="section-header" data-target="Stocks-group">
                 <div class="section-title">
@@ -872,6 +961,9 @@
             
             <div class="account-group" id="Stocks-group">
                 <div class="account-card">
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                    </div>
                     <div class="account-header">
                         <div class="account-name">Fidelity Cash</div>
                         <div class="account-time">13 mins ago</div>
@@ -881,6 +973,9 @@
                 </div>
                 
                 <div class="account-card">
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                    </div>
                     <div class="account-header">
                         <div class="account-name">Wells Fargo</div>
                         <div class="account-time">13 mins ago</div>
@@ -890,6 +985,9 @@
                 </div>
                 
                 <div class="account-card">
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                    </div>
                     <div class="account-header">
                         <div class="account-name">Wells Fargo</div>
                         <div class="account-time">13 mins ago</div>
@@ -911,6 +1009,9 @@
             
             <div class="account-group" id="Funds-group">
                 <div class="account-card">
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                    </div>
                     <div class="account-header">
                         <div class="account-name">Beneke Fabricators</div>
                         <div class="account-time">11 mins ago</div>
@@ -920,6 +1021,9 @@
                 </div>
                 
                 <div class="account-card">
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                    </div>
                     <div class="account-header">
                         <div class="account-name">Fidelity</div>
                         <div class="account-time">13 mins ago</div>
@@ -929,6 +1033,9 @@
                 </div>
                 
                 <div class="account-card">
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                    </div>
                     <div class="account-header">
                         <div class="account-name">Penthing</div>
                         <div class="account-time">9 mins ago</div>
@@ -940,6 +1047,9 @@
 
                 
                 <div class="account-card">
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                    </div>
                     <div class="account-header">
                         <div class="account-name">Seaf Goodman And ...</div>
                         <div class="account-time">11 mins ago</div>
@@ -958,6 +1068,9 @@
             </div>
             <div class="account-group" id="Bonds-group">
                 <div class="account-card">
+                    <div class="loading-overlay">
+                        <div class="loading-spinner"></div>
+                    </div>
                     <div class="account-header">
                         <div class="account-name">Bonds Options - Single</div>
                         <div class="account-time"></div>
@@ -973,39 +1086,29 @@
         <div class="market-section">
             <div class="market-card">
                 <div class="market-header">
-                    <div class="market-title">Market Movers</div>
+                    <div>
+                        <div class="market-title">Account Performance</div>
+                        <div class="chart-subtitle">Showing: <span class="account-name">Portfolio Value</span></div>
+                    </div>
                 </div>
                 
                 <div class="market-movers">
                     <div class="mover-card">
-                        <div class="mover-name">TOOKY</div>
-                        <div class="mover-value">$3,482</div>
-                        <div class="mover-change positive">0.65%</div>
+                        <div class="mover-name">Current Value</div>
+                        <div class="mover-value" id="current-value">$0.00</div>
                     </div>
                     <div class="mover-card">
-                        <div class="mover-name">S&P 500</div>
-                        <div class="mover-value">4,890.18</div>
-                        <div class="mover-change negative">-0.72%</div>
+                        <div class="mover-name">7d Change</div>
+                        <div class="mover-value" id="change-value">$0.00</div>
+                        <div class="mover-change" id="change-percent">0.00%</div>
                     </div>
-                    <div class="mover-card">
-                        <div class="mover-name">DOW JONES</div>
-                        <div class="mover-value">38,654.32</div>
-                        <div class="mover-change positive">0.14%</div>
-                    </div>
-                    <div class="mover-card">
-                        <div class="mover-name">10-TR BOND</div>
-                        <div class="mover-value">2,105.76</div>
-                        <div class="mover-change negative">-2.96%</div>
-                    </div>
-                </div>
-                
-                <div class="holdings-card">
-                    <div>Your Holdings</div>
-                    <div class="holdings-value">0.14%</div>
                 </div>
                 
                 <div class="chart-container">
                     <canvas id="marketChart"></canvas>
+                    <div class="chart-overlay">
+                        <div class="loading-spinner"></div>
+                    </div>
                 </div>
             </div>
             
@@ -1116,107 +1219,295 @@
     </div>
 
     <script>
-        // Initialize market chart
-
-        // 发送请求，获取api数据 
-
-        const marketCtx = document.getElementById('marketChart').getContext('2d');
-        const marketChart = new Chart(marketCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-                datasets: [{
-                    label: 'Portfolio Value',
-                    data: [2100000, 2150000, 2170000, 2220000, 2250000, 2300000, 2317000],
-                    borderColor: '#3498db',
-                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                    borderWidth: 3,
-                    pointRadius: 0,
-                    tension: 0.3,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+        // 全局变量，存储当前选中的账户卡片和图表实例
+        let currentMarketChart = null;
+        let selectedAccountCard = null;
+        
+        // 模拟数据库数据（实际应用中需要替换为API调用）
+        const accountData = {
+            "Fidelity Cash": generateAccountData(2291.90, 7),
+            "Wells Fargo": generateAccountData(300.13, 7),
+            "Beneke Fabricators": generateAccountData(16231.00, 7),
+            "Fidelity": generateAccountData(53165.79, 7),
+            "Penthing": generateAccountData(50472.35, 7),
+            "Seaf Goodman And ...": generateAccountData(75001.98, 7),
+            "Bonds Options - Single": generateAccountData(3205.58, 7),
+        };
+        
+        // 生成账户数据的函数
+        function generateAccountData(initialValue, days) {
+            const today = new Date();
+            const data = [];
+            let currentValue = initialValue;
+            const volatility = initialValue * 0.02; // 2%波动率
+            
+            for (let i = days-1; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(today.getDate() - i);
+                
+                // 模拟每日随机波动
+                const change = (Math.random() - 0.5) * volatility;
+                currentValue += change;
+                
+                // 确保数值不小于最小值
+                currentValue = Math.max(currentValue, initialValue * 0.85);
+                
+                data.push({
+                    date: date,
+                    value: parseFloat(currentValue.toFixed(2))
+                });
+            }
+            return data;
+        }
+        
+        // 获取最近7天的账户数据
+        function getAccountData(accountName) {
+            return new Promise((resolve) => {
+                // 模拟API请求延迟
+                setTimeout(() => {
+                    resolve(accountData[accountName] || []);
+                }, 600);
+            });
+        }
+        
+        // 账户卡片点击事件处理函数
+        async function handleAccountClick(accountCard) {
+            // 如果正在加载，忽略点击
+            if (accountCard.classList.contains('loading')) return;
+            
+            // 清除之前的选择
+            if (selectedAccountCard) {
+                selectedAccountCard.classList.remove('selected');
+            }
+            
+            // 设置当前账户为选中状态
+            accountCard.classList.add('selected');
+            selectedAccountCard = accountCard;
+            
+            // 添加加载状态
+            accountCard.classList.add('loading');
+            
+            // 获取账户名称
+            const accountNameElement = accountCard.querySelector('.account-name');
+            const accountName = accountNameElement.textContent;
+            
+            // 设置图表加载状态
+            const chartContainer = document.querySelector('.chart-container');
+            chartContainer.classList.add('loading');
+            
+            // 更新图表标题
+            document.querySelector('.chart-subtitle .account-name').textContent = accountName;
+            
+            try {
+                // 获取账户数据（模拟API调用）
+                const data = await getAccountData(accountName);
+                
+                // 处理数据
+                const labels = data.map(item => {
+                    const date = item.date;
+                    return new Intl.DateTimeFormat('en-US', { 
+                        month: 'short', 
+                        day: 'numeric' 
+                    }).format(date);
+                });
+                
+                const values = data.map(item => item.value);
+                
+                // 计算变化百分比
+                const firstValue = values[0];
+                const lastValue = values[values.length - 1];
+                const valueChange = lastValue - firstValue;
+                const percentChange = ((valueChange / firstValue) * 100).toFixed(2);
+                
+                // 更新概览卡片
+                document.getElementById('current-value').textContent = `$${lastValue.toLocaleString()}`;
+                document.getElementById('change-value').textContent = `$${valueChange.toFixed(2)}`;
+                
+                const changePercentElement = document.getElementById('change-percent');
+                changePercentElement.textContent = `${percentChange}%`;
+                changePercentElement.className = `mover-change ${valueChange >= 0 ? 'positive' : 'negative'}`;
+                
+                // 更新图表
+                updateMarketChart(labels, values);
+                
+            } catch (error) {
+                console.error('加载账户数据时出错:', error);
+                alert('加载账户数据时出错，请重试');
+            } finally {
+                // 移除加载状态
+                accountCard.classList.remove('loading');
+                chartContainer.classList.remove('loading');
+            }
+        }
+        
+        // 更新市场图表
+        function updateMarketChart(labels, values) {
+            const marketCtx = document.getElementById('marketChart').getContext('2d');
+            
+            // 如果图表已经存在，销毁它
+            if (currentMarketChart) {
+                currentMarketChart.destroy();
+            }
+            
+            // 创建新图表
+            currentMarketChart = new Chart(marketCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Account Value',
+                        data: values,
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointBorderColor: '#3498db',
+                        tension: 0.3,
+                        fill: true
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.05)'
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
                         },
-                        ticks: {
-                            callback: function(value) {
-                                return '$' + (value / 1000000).toFixed(1) + 'M';
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `Value: $${context.parsed.y.toLocaleString()}`;
+                                }
                             }
                         }
                     },
-                    x: {
-                        grid: {
-                            display: false
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
                         }
                     }
                 }
-            }
-        });
-
-        // Initialize allocation chart
-        const allocCtx = document.getElementById('allocationChart').getContext('2d');
-        const allocChart = new Chart(allocCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['US Stocks', 'International', 'Bonds', 'Cash', 'Alternatives'],
-                datasets: [{
-                    data: [65, 12, 15, 5, 3],
-                    backgroundColor: [
-                        '#3498db',
-                        '#2ecc71',
-                        '#9b59b6',
-                        '#f1c40f',
-                        '#e74c3c'
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right'
-                    }
+            });
+        }
+        
+        // 初始页面加载时设置图表
+        window.addEventListener('DOMContentLoaded', () => {
+            // 初始化市场图表
+            const marketCtx = document.getElementById('marketChart').getContext('2d');
+            currentMarketChart = new Chart(marketCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Portfolio Value',
+                        data: [2100000, 2150000, 2170000, 2220000, 2250000, 2300000, 2317000],
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        tension: 0.3,
+                        fill: true
+                    }]
                 },
-                cutout: '70%'
-            }
-        });
-
-        // Collapsible sections functionality
-        document.querySelectorAll('.section-header').forEach(header => {
-            header.addEventListener('click', function() {
-                const targetId = this.getAttribute('data-target');
-                const targetGroup = document.getElementById(targetId);
-                
-                // Toggle active class on header
-                this.classList.toggle('active');
-                
-                // Toggle display of account group
-                if (targetGroup.style.display === 'flex') {
-                    targetGroup.style.display = 'none';
-                } else {
-                    targetGroup.style.display = 'flex';
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + (value / 1000000).toFixed(1) + 'M';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
                 }
             });
-        });
-
-        // Add hover effects to account cards
-        document.querySelectorAll('.account-card').forEach(card => {
-            card.addEventListener('click', function() {
-                this.classList.toggle('active');
+            
+            // 初始化分配图表
+            const allocCtx = document.getElementById('allocationChart').getContext('2d');
+            const allocChart = new Chart(allocCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['US Stocks', 'International', 'Bonds', 'Cash', 'Alternatives'],
+                    datasets: [{
+                        data: [65, 12, 15, 5, 3],
+                        backgroundColor: [
+                            '#3498db',
+                            '#2ecc71',
+                            '#9b59b6',
+                            '#f1c40f',
+                            '#e74c3c'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+            
+            // 折叠/展开功能
+            document.querySelectorAll('.section-header').forEach(header => {
+                header.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const targetGroup = document.getElementById(targetId);
+                    
+                    // Toggle active class on header
+                    this.classList.toggle('active');
+                    
+                    // Toggle display of account group
+                    if (targetGroup.style.display === 'flex') {
+                        targetGroup.style.display = 'none';
+                    } else {
+                        targetGroup.style.display = 'flex';
+                    }
+                });
+            });
+            
+            // 账户卡片点击事件
+            document.querySelectorAll('.account-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    handleAccountClick(this);
+                });
             });
         });
     </script>
