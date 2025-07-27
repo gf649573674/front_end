@@ -332,6 +332,98 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
             transition: transform 0.3s ease;
         }
+                .investment-form {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+        
+        .investment-form h3 {
+            font-size: 18px;
+            color: #071c30;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 12px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2c3e50;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.3s;
+        }
+        
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+        
+        /* 表单状态消息 */
+        .form-message {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: center;
+            display: none;
+        }
+        
+        .form-message.success {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+            display: block;
+        }
+        
+        .form-message.error {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            display: block;
+        }
+        /* 左侧现金表单样式 */
         .cash-name{
             font-size: 15px;
             font-weight: 700;
@@ -392,6 +484,14 @@
         .account-type {
             font-size: 13px;
             color: #7f8c8d;
+        }
+        .large-market{
+            background: white;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            width: 100%; /* 确保宽度为100% */
+            box-sizing: border-box; /* 防止padding影响宽度 */
         }
 
         /* 修复market-card宽度问题 */
@@ -702,16 +802,64 @@
         <!-- 左侧账户列表 -->
         <div class="accounts">
             <!-- CASH Data -->
-            <div class ="cash-card">
-                <div class="cash-name">
-                    <i class="fas fa-wallet"></i>
-                    Cash
-                </div>    
-                <div class="cash-amount">
-                    $2,291.90
-                </div>
-
+            <h3><i class="fas fa-plus-circle"></i> 新增投资</h3>
+            <div class="form-group">
+                <label for="symbol">代码(Symbol)</label>
+                <input type="text" id="symbol" name="symbol" placeholder="例如: AAPL" required>
             </div>
+        
+            <div class="form-group">
+                <label for="name">名称(Name)</label>
+                <input type="text" id="name" name="name" placeholder="例如: Apple Inc." required>
+            </div>
+        
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="type">类型(Type)</label>
+                    <select id="type" name="type" required>
+                        <option value="">选择类型</option>
+                        <option value="Stock">股票</option>
+                        <option value="Bond">债券</option>
+                        <option value="ETF">ETF</option>
+                        <option value="Mutual Fund">共同基金</option>
+                        <option value="Index Fund">指数基金</option>
+                        <option value="REIT">房地产信托</option>
+                    </select>
+                </div>
+            
+                <div class="form-group">
+                    <label for="currency">货币(Currency)</label>
+                    <select id="currency" name="currency" required>
+                        <option value="">选择货币</option>
+                        <option value="USD">美元 (USD)</option>
+                        <option value="EUR">欧元 (EUR)</option>
+                        <option value="JPY">日元 (JPY)</option>
+                        <option value="GBP">英镑 (GBP)</option>
+                        <option value="CNY">人民币 (CNY)</option>
+                    </select>
+                </div>
+            </div>
+        
+            <div class="form-group">
+                <label for="exchange">交易所(Exchange)</label>
+                <select id="exchange" name="exchange" required>
+                    <option value="">选择交易所</option>
+                    <option value="NYSE">纽约证券交易所 (NYSE)</option>
+                    <option value="NASDAQ">纳斯达克 (NASDAQ)</option>
+                    <option value="SSE">上海证券交易所 (SSE)</option>
+                    <option value="HKEX">香港交易所 (HKEX)</option>
+                    <option value="LSE">伦敦证券交易所 (LSE)</option>
+                    <option value="TSE">东京证券交易所 (TSE)</option>
+                </select>
+            </div>
+        
+            <button class="submit-btn" onclick="submitInvestment()">
+                <i class="fas fa-plus"></i> 添加投资
+            </button>
+        
+            <div id="form-message" class="form-message"></div>
+
+
             <!-- Stocks Section -->
             <div class="section-header" data-target="Stocks-group">
                 <div class="section-title">
@@ -782,24 +930,6 @@
                 
                 <div class="account-card">
                     <div class="account-header">
-                        <div class="account-name">Madrigal Electromotive</div>
-                        <div class="account-time">10/8/12</div>
-                    </div>
-                    <div class="account-amount">$16,838.00</div>
-                    <div class="account-type">Water White 401k</div>
-                </div>
-                
-                <div class="account-card">
-                    <div class="account-header">
-                        <div class="account-name">Penthing</div>
-                        <div class="account-time">9 mins ago</div>
-                    </div>
-                    <div class="account-amount">$455,191.03</div>
-                    <div class="account-type">IRA 1</div>
-                </div>
-                
-                <div class="account-card">
-                    <div class="account-header">
                         <div class="account-name">Penthing</div>
                         <div class="account-time">9 mins ago</div>
                     </div>
@@ -807,14 +937,7 @@
                     <div class="account-type">IRA 2</div>
                 </div>
                 
-                <div class="account-card">
-                    <div class="account-header">
-                        <div class="account-name">Penthing</div>
-                        <div class="account-time">9 mins ago</div>
-                    </div>
-                    <div class="account-amount">$103,144.46</div>
-                    <div class="account-type">Taxable</div>
-                </div>
+
                 
                 <div class="account-card">
                     <div class="account-header">
@@ -824,7 +947,6 @@
                     <div class="account-amount">$75,001.98</div>
                     <div class="account-type">Seaf Goodman 401k</div>
                 </div>
-
             </div>
             <div class="section-header" data-target="Bonds-group">
                 <div class="section-title">
@@ -887,7 +1009,7 @@
                 </div>
             </div>
             
-            <div class="market-card">
+            <div class="large-market">
                 <div class="gainers-losers">
                     <div class="gainers">
                         <div class="gl-title">YOUR GAINERS</div>
@@ -995,6 +1117,9 @@
 
     <script>
         // Initialize market chart
+
+        // 发送请求，获取api数据 
+
         const marketCtx = document.getElementById('marketChart').getContext('2d');
         const marketChart = new Chart(marketCtx, {
             type: 'line',
