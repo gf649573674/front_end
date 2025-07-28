@@ -1234,6 +1234,111 @@
             "Bonds Options - Single": generateAccountData(3205.58, 7),
         };
         
+        function submitInvestment() {
+            // 获取表单元素
+            const symbolInput = document.getElementById('symbol');
+            const nameInput = document.getElementById('name');
+            const typeSelect = document.getElementById('type');
+            const currencySelect = document.getElementById('currency');
+            const exchangeSelect = document.getElementById('exchange');
+            const messageDiv = document.getElementById('form-message');
+            
+            // 重置消息状态
+            messageDiv.className = 'form-message';
+            
+            // 验证表单字段
+            if (!symbolInput.value.trim()) {
+                showMessage('请输入股票代码', 'error');
+                symbolInput.focus();
+                return;
+            }
+            
+            if (!nameInput.value.trim()) {
+                showMessage('请输入投资名称', 'error');
+                nameInput.focus();
+                return;
+            }
+            
+            if (!typeSelect.value) {
+                showMessage('请选择投资类型', 'error');
+                typeSelect.focus();
+                return;
+            }
+            
+            if (!currencySelect.value) {
+                showMessage('请选择货币类型', 'error');
+                currencySelect.focus();
+                return;
+            }
+            
+            if (!exchangeSelect.value) {
+                showMessage('请选择交易所', 'error');
+                exchangeSelect.focus();
+                return;
+            }
+            
+            // 创建投资对象
+            const investment = {
+                symbol: symbolInput.value.trim().toUpperCase(),
+                name: nameInput.value.trim(),
+                type: typeSelect.value,
+                currency: currencySelect.value,
+                exchange: exchangeSelect.value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // 在实际应用中，这里应该发送到后端API
+            // 模拟API请求
+            simulateApiRequest(investment)
+                .then(response => {
+                    showMessage('投资添加成功!', 'success');
+                    resetForm();
+                })
+                .catch(error => {
+                    showMessage('添加失败: ' + error.message, 'error');
+                });
+        }
+        
+        // 显示表单消息
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('form-message');
+            messageDiv.textContent = message;
+            messageDiv.className = `form-message ${type}`;
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                messageDiv.className = 'form-message';
+            }, 3000);
+        }
+        
+        // 重置表单
+        function resetForm() {
+            document.getElementById('symbol').value = '';
+            document.getElementById('name').value = '';
+            document.getElementById('type').selectedIndex = 0;
+            document.getElementById('currency').selectedIndex = 0;
+            document.getElementById('exchange').selectedIndex = 0;
+        }
+        
+        // 模拟API请求
+        function simulateApiRequest(data) {
+            return new Promise((resolve, reject) => {
+                // 模拟网络延迟
+                setTimeout(() => {
+                    // 在实际应用中，这里会发送真实的API请求
+                    console.log('提交的投资数据:', data);
+                    
+                    // 模拟10%的失败率
+                    if (Math.random() < 0.9) {
+                        resolve({ status: 'success', message: 'Investment added' });
+                    } else {
+                        reject(new Error('网络错误，请重试'));
+                    }
+                }, 800);
+            });
+        }
+
+
         // 生成账户数据的函数
         function generateAccountData(initialValue, days) {
             const today = new Date();
@@ -1260,6 +1365,7 @@
             return data;
         }
         
+
         // 获取最近7天的账户数据
         function getAccountData(accountName) {
             return new Promise((resolve) => {
@@ -1339,6 +1445,7 @@
                 chartContainer.classList.remove('loading');
             }
         }
+
         
         // 更新市场图表
         function updateMarketChart(labels, values) {
