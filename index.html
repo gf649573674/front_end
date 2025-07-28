@@ -749,6 +749,12 @@
             margin-bottom: 4px;
         }
 
+        .fee-text::before {
+            content: "·"; /* 统一符号 */
+            margin-right: 4px; /* 符号与文本间距 */
+            flex-shrink: 0; /* 防止符号压缩 */
+        }
+
         .fee-amount {
             font-weight: 700;
             color: #e74c3c;
@@ -1216,10 +1222,16 @@
                 
                 <div class="fee-card">
                     <p class="fee-text">
-                        You are currently paying over <span class="fee-amount">$340.54</span> per year in fees for mutual funds and ETFs.
+                        You are underweight in International Stocks by <span class="fee-amount">-8.64%</span> vs baseline. Add exposure to balance global diversification.
                     </p>
                     <p class="fee-text">
-                        You are projected to pay over <span class="fee-amount">$130.72</span> in 30 years in management fees for mutual funds and ETFs.
+                        You are paying <span class="fee-amount">$340.54</span> annually in fees. Switch to low - cost funds to cut 30 - year costs to <span class="fee-amount">$130.72</span>.
+                    </p>
+                    <p class="fee-text">
+                        You risk a skewed stock - bond ratio. Rebalance to <span class="fee-amount">60 : 40</span> (stocks : bonds) for moderate risk.
+                    </p>
+                    <p class="fee-text">
+                        You lack diversification. Add <span class="fee-amount">5 - 10%</span> alternatives (gold/REITs) to lower volatility.
                     </p>
                 </div>
             </div>
