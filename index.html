@@ -1289,7 +1289,7 @@
             
             // 在实际应用中，这里应该发送到后端API
             // 模拟API请求
-            simulateApiRequest(investment)
+            apiAddedRequest(investment)
                 .then(response => {
                     showMessage('投资添加成功!', 'success');
                     resetForm();
@@ -1321,24 +1321,44 @@
         }
         
         // 模拟API请求
-        function simulateApiRequest(data) {
-            return new Promise((resolve, reject) => {
-                // 模拟网络延迟
-                setTimeout(() => {
-                    // 在实际应用中，这里会发送真实的API请求
-                    console.log('提交的投资数据:', data);
-                    
-                    // 模拟10%的失败率
-                    if (Math.random() < 0.9) {
-                        resolve({ status: 'success', message: 'Investment added' });
-                    } else {
-                        reject(new Error('网络错误，请重试'));
-                    }
-                }, 800);
-            });
+        function apiAddedRequest(data) {
+            const apiUrl = 'https://api.example.com/investments';
+            return axios.post(apiUrl, data)
+            .then(response => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.data;
+                } else {
+                    throw new Error(`API请求失败,状态码: ${response.status}`);
+                }
+            })
+            .catch((error => {      
+                if (error.response) {
+                // 服务器返回了错误响应
+                const status = error.response.status;
+                let message = '网络错误，请重试';
+            
+                if (status === 400) {
+                    message = '请求数据格式错误';
+                } else if (status === 401) {
+                    message = '未授权，请登录';
+                } else if (status === 403) {
+                    message = '权限不足';
+                } else if (status === 404) {
+                    message = '资源未找到';
+                } else if (status >= 500) {
+                    message = '服务器错误';
+                }
+            
+                throw new Error(`${message} (状态码: ${status})`);
+            } else if (error.request) {
+                // 请求已发出但没有收到响应
+                throw new Error('无法连接到服务器，请检查网络连接');
+            } else {
+                // 其他错误
+                throw new Error('请求配置错误: ' + error.message);
+            }
+            }))
         }
-
-
         // 生成账户数据的函数
         function generateAccountData(initialValue, days) {
             const today = new Date();
