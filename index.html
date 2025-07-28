@@ -1437,6 +1437,127 @@
             "Bonds Options - Single": generateAccountData(3205.58, 7),
         };
 
+        function submitInvestment() {
+            // 获取表单元素
+            const symbolInput = document.getElementById('symbol');
+            const nameInput = document.getElementById('name');
+            const typeSelect = document.getElementById('type');
+            const currencySelect = document.getElementById('currency');
+            const exchangeSelect = document.getElementById('exchange');
+            const messageDiv = document.getElementById('form-message');
+            
+            // 重置消息状态
+            messageDiv.className = 'form-message';
+            
+            // 验证表单字段
+            if (!symbolInput.value.trim()) {
+                showMessage('请输入股票代码', 'error');
+                symbolInput.focus();
+                return;
+            }
+            
+            if (!nameInput.value.trim()) {
+                showMessage('请输入投资名称', 'error');
+                nameInput.focus();
+                return;
+            }
+            
+            if (!typeSelect.value) {
+                showMessage('请选择投资类型', 'error');
+                typeSelect.focus();
+                return;
+            }
+            
+            if (!currencySelect.value) {
+                showMessage('请选择货币类型', 'error');
+                currencySelect.focus();
+                return;
+            }
+            
+            if (!exchangeSelect.value) {
+                showMessage('请选择交易所', 'error');
+                exchangeSelect.focus();
+                return;
+            }
+            
+            // 创建投资对象
+            const investment = {
+                symbol: symbolInput.value.trim().toUpperCase(),
+                name: nameInput.value.trim(),
+                type: typeSelect.value,
+                currency: currencySelect.value,
+                exchange: exchangeSelect.value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // 在实际应用中，这里应该发送到后端API
+            // 模拟API请求
+            apiAddedRequest(investment)
+                .then(response => {
+                    showMessage('投资添加成功!', 'success');
+                    resetForm();
+                })
+                .catch(error => {
+                    showMessage('添加失败: ' + error.message, 'error');
+                });
+        }
+        
+        // 显示表单消息
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('form-message');
+            messageDiv.textContent = message;
+            messageDiv.className = `form-message ${type}`;
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                messageDiv.className = 'form-message';
+            }, 3000);
+        }
+        
+        // 重置表单
+        function resetForm() {
+            document.getElementById('symbol').value = '';
+            document.getElementById('name').value = '';
+            document.getElementById('type').selectedIndex = 0;
+            document.getElementById('currency').selectedIndex = 0;
+            document.getElementById('exchange').selectedIndex = 0;
+        }
+        
+        // 模拟API请求
+        function apiAddedRequest(data) {
+            const apiUrl = 'https://www.baidu.com' //后续api替换
+            return axios.post(apiUrl, data)
+            .then(response => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.data;
+                } else {
+                    throw new Error(`API请求失败,状态码: ${response.status}`);
+                }
+                resetForm();
+            })
+            .catch((error => {    
+                if (error.response) {                
+                    if (status === 400) {
+                        message = '请求数据格式错误';
+                    } else if (status === 401) {
+                        message = '未授权，请登录';
+                    } else if (status === 403) {
+                        message = '权限不足';
+                    } else if (status === 404) {
+                        message = '资源未找到';
+                    } else if (status >= 500) {
+                        message = '服务器错误';
+                    }
+                    throw new Error(`${message} (状态码: ${status})`);  
+                } else if (error.request) {
+                    // 请求已发出但没有收到响应
+                    throw new Error('无法连接到服务器，请检查网络连接');
+                } else {
+                    // 其他错误
+                    throw new Error('请求配置错误: ' + error.message);
+                }
+        }))
+        }
         // 生成账户数据的函数
         function generateAccountData(initialValue, days) {
             const today = new Date();
