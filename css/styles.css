@@ -13,7 +13,7 @@ body {
 
 .container {
 	display: grid;
-	grid-template-columns: 1.2fr 1.5fr 1fr;
+	grid-template-columns: 0.8fr 1.8fr 0.8fr;
 	grid-template-rows: auto auto 1fr;
 	gap: 20px;
 	max-width: 1600px;
@@ -344,6 +344,13 @@ body {
 	border-radius: 16px;
 	padding: 20px;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  	transition: transform 0.3s ease; /* 关键！和左侧保持相同过渡动画 */
+}
+
+/* 👇 在这里新增点击反馈的样式 👇 */
+.insights-card:hover {
+  	transform: translateY(-3px); 
+  	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
 }
 
 .insight-row {
