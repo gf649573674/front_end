@@ -1322,7 +1322,7 @@
         
         // 模拟API请求
         function apiAddedRequest(data) {
-            const apiUrl = 'https://api.example.com/investments';
+            const apiUrl = 'https://www.baidu.com' //后续api替换
             return axios.post(apiUrl, data)
             .then(response => {
                 if (response.status >= 200 && response.status < 300) {
@@ -1330,34 +1330,30 @@
                 } else {
                     throw new Error(`API请求失败,状态码: ${response.status}`);
                 }
+                resetForm();
             })
-            .catch((error => {      
-                if (error.response) {
-                // 服务器返回了错误响应
-                const status = error.response.status;
-                let message = '网络错误，请重试';
-            
-                if (status === 400) {
-                    message = '请求数据格式错误';
-                } else if (status === 401) {
-                    message = '未授权，请登录';
-                } else if (status === 403) {
-                    message = '权限不足';
-                } else if (status === 404) {
-                    message = '资源未找到';
-                } else if (status >= 500) {
-                    message = '服务器错误';
+            .catch((error => {    
+                if (error.response) {                
+                    if (status === 400) {
+                        message = '请求数据格式错误';
+                    } else if (status === 401) {
+                        message = '未授权，请登录';
+                    } else if (status === 403) {
+                        message = '权限不足';
+                    } else if (status === 404) {
+                        message = '资源未找到';
+                    } else if (status >= 500) {
+                        message = '服务器错误';
+                    }
+                    throw new Error(`${message} (状态码: ${status})`);  
+                } else if (error.request) {
+                    // 请求已发出但没有收到响应
+                    throw new Error('无法连接到服务器，请检查网络连接');
+                } else {
+                    // 其他错误
+                    throw new Error('请求配置错误: ' + error.message);
                 }
-            
-                throw new Error(`${message} (状态码: ${status})`);
-            } else if (error.request) {
-                // 请求已发出但没有收到响应
-                throw new Error('无法连接到服务器，请检查网络连接');
-            } else {
-                // 其他错误
-                throw new Error('请求配置错误: ' + error.message);
-            }
-            }))
+        }))
         }
         // 生成账户数据的函数
         function generateAccountData(initialValue, days) {
