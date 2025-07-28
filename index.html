@@ -677,6 +677,13 @@
             border-radius: 16px;
             padding: 18px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease; /* 关键！和左侧保持相同过渡动画 */
+        }
+
+        /* 👇 在这里新增点击反馈的样式 👇 */
+        .insights-card:hover {
+  	        transform: translateY(-3px); 
+  	        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         }
 
         .insight-row {
@@ -990,6 +997,7 @@
                     </div>
                     <div class="account-header">
                         <div class="account-name">Wells Fargo</div>
+            
                         <div class="account-time">13 mins ago</div>
                     </div>
                     <div class="account-amount">$2,000.87</div>
