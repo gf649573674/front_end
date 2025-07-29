@@ -623,6 +623,37 @@
             margin-bottom: 18px;
         }
 
+        /* 标题包裹容器的样式，可根据需要调整间距等 */
+        .performance-title-wrap {
+            display: flex;
+            flex-direction: column; /* 让标题和副标题垂直排列，也可以用 row 水平排列，看你需求 */
+            gap: 4px; /* 标题和副标题之间的间距 */
+        }
+
+        /* 时间范围按钮容器样式，控制按钮排列 */
+        .time-range-buttons {
+            display: flex;
+            gap: 8px; /* 按钮之间的间距 */
+        }
+
+        /* 时间范围按钮基础样式（如果之前没写全可以补充） */
+        .time-range-btn {
+            background: #f5f7fa;
+            border: 1px solid #e0e6ed;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* 按钮激活和hover状态，保持交互反馈 */
+        .time-range-btn.active,
+        .time-range-btn:hover {
+            background: #e3f2fd;
+            border-color: #3498db;
+        }
+
+
         .market-title {
             font-size: 17px;
             font-weight: 600;
@@ -1254,9 +1285,18 @@
         <div class="market-section">
             <div class="market-card">
                 <div class="market-header">
-                    <div>
+                    <!-- 新增一个容器包裹标题，用于控制排版 -->
+                    <div class="performance-title-wrap"> 
                         <div class="market-title">Account Performance</div>
-                        <div class="chart-subtitle">Showing: <span class="account-name">Portfolio Value</span></div>
+                        <div class="chart-subtitle">
+                    Showing: <span class="account-name">Portfolio Value</span>
+                    </div>
+                </div>
+                    <!-- 时间范围按钮容器，后续用 CSS 放右上角 -->
+                    <div class="time-range-buttons"> 
+                        <button class="time-range-btn active" data-range="7">7 days</button>
+                        <button class="time-range-btn" data-range="30">30 days</button>
+                        <button class="time-range-btn" data-range="90">3 months</button>
                     </div>
                 </div>
 
@@ -1889,6 +1929,31 @@
                     handleAccountClick(this);
                 });
             });
+
+            // 👇 新增时间范围按钮点击逻辑，放在这里 👇
+            document.querySelectorAll('.time-range-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    // 移除之前的 active 状态
+                    document.querySelectorAll('.time-range-btn').forEach(b => b.classList.remove('active'));
+                    // 添加当前点击按钮的 active 状态
+                    this.classList.add('active');
+                    const range = this.getAttribute('data-range');
+                    // 如果有选中的账户卡片，根据新的时间范围更新数据
+                    if (selectedAccountCard) {
+                        const accountNameElement = selectedAccountCard.querySelector('.account-name');
+                        const accountName = accountNameElement.textContent;
+                        // 重新生成对应时间范围的账户数据（模拟逻辑，实际换接口请求）
+                        accountData[accountName] = generateAccountData(getInitialValue(accountName), parseInt(range)); 
+                        handleAccountClick(selectedAccountCard); // 重新更新图表等内容
+                    }
+                });
+            });
+
+            // 辅助函数：获取账户初始值（从模拟数据里取，实际按需调整）
+            function getInitialValue(accountName) {
+                const data = accountData[accountName] || [];
+                return data.length > 0 ? data[0].value : 0;
+            }
         });
     </script>
 </body>
