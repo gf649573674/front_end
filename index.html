@@ -7,6 +7,7 @@
     <title>投资组合管理系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -1065,35 +1066,34 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="currency">货币(Currency)</label>
-                        <select id="currency" name="currency" required>
-                            <option value="">选择货币</option>
-                            <option value="USD">美元 (USD)</option>
-                            <option value="EUR">欧元 (EUR)</option>
-                            <option value="JPY">日元 (JPY)</option>
-                            <option value="GBP">英镑 (GBP)</option>
-                            <option value="CNY">人民币 (CNY)</option>
+                        <label for="exchange">交易所(Exchange)</label>
+                        <select id="exchange" name="exchange" required>
+                            <option value="">选择交易所</option>
+                            <option value="NYSE">纽约证券交易所 (NYSE)</option>
+                            <option value="NASDAQ">纳斯达克 (NASDAQ)</option>
+                            <option value="SSE">上海证券交易所 (SSE)</option>
+                            <option value="HKEX">香港交易所 (HKEX)</option>
+                            <option value="LSE">伦敦证券交易所 (LSE)</option>
+                            <option value="TSE">东京证券交易所 (TSE)</option>
                         </select>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="exchange">交易所(Exchange)</label>
-                    <select id="exchange" name="exchange" required>
-                        <option value="">选择交易所</option>
-                        <option value="NYSE">纽约证券交易所 (NYSE)</option>
-                        <option value="NASDAQ">纳斯达克 (NASDAQ)</option>
-                        <option value="SSE">上海证券交易所 (SSE)</option>
-                        <option value="HKEX">香港交易所 (HKEX)</option>
-                        <option value="LSE">伦敦证券交易所 (LSE)</option>
-                        <option value="TSE">东京证券交易所 (TSE)</option>
-                    </select>
                 </div>
 
                 <button class="submit-btn" onclick="submitInvestment()">
                     <i class="fas fa-plus"></i> 添加投资
                 </button>
 
+                <div id="form-message" class="form-message"></div>
+            </div>
+            <div class="cash-card">
+                <h3><i class="fas fa-plus-circle"></i> 出售资产</h3>
+                <div class="form-group">
+                    <label for="symbol">代码(Symbol)</label>
+                    <input type="text" id="symbol" name="symbol" placeholder="例如: AAPL" required>
+                </div>
+                    <button class="submit-btn" onclick="sellInvestment()">
+                    <i class="fas fa-plus"></i> 出售
+                </button>
                 <div id="form-message" class="form-message"></div>
             </div>
             <!-- Stocks Section -->
@@ -1558,7 +1558,39 @@
                 }
         }))
         }
-        // 生成账户数据的函数
+
+        //实现出售资产功能
+        function sellInvestment(){
+            const symbolInput = document.getElementById('symbol');
+            if (!symbolInput.value.trim()) {
+                showMessage('请输入投资代码', 'error');
+                symbolInput.focus();
+                return;
+            }
+            const symbol = symbolInput.value.trim().toUpperCase()
+            apiDeletedRequest(symbol)
+                .then(response => {
+                    showMessage('投资添加成功!', 'success');
+                    document.getElementById('symbol').value = '';
+                })
+                .catch(error => {
+                    showMessage('添加失败: ' + error.message, 'error');
+                });
+
+        }
+        function apiDeletedRequest(){
+            const apiUrl = 'https://www.baidu.com'
+            
+            return axios.post(apiUrl, data)
+              .then(response => {
+                console.log(response.data);
+                })
+                .catch(error => {
+                console.error(error);
+            })
+        }
+
+        // 生成账户数据的函数,用于做假数据
         function generateAccountData(initialValue, days) {
             const today = new Date();
             const data = [];
