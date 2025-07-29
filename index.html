@@ -1256,11 +1256,11 @@
                         <div class="loading-spinner"></div>
                     </div>
                     <div class="account-header">
-                        <div class="account-name">Fidelity Cash</div>
+                        <div class="account-name">Fidelity Investments</div>
                         <div class="account-time">13 mins ago</div>
                     </div>
                     <div class="account-amount">$2,291.90</div>
-                    <div class="account-type">Cash Management</div>
+                    <div class="account-type">Brokerage Cash</div>
                 </div>
 
                 <div class="account-card">
@@ -1272,7 +1272,7 @@
                         <div class="account-time">13 mins ago</div>
                     </div>
                     <div class="account-amount">$300.13</div>
-                    <div class="account-type">Checking</div>
+                    <div class="account-type">Linked Brokerage Account</div>
                 </div>
 
                 <div class="account-card">
@@ -1280,11 +1280,11 @@
                         <div class="loading-spinner"></div>
                     </div>
                     <div class="account-header">
-                        <div class="account-name">Wells Fargo</div>
+                        <div class="account-name">Tech ETF Holdings</div>
                         <div class="account-time">13 mins ago</div>
                     </div>
                     <div class="account-amount">$2,000.87</div>
-                    <div class="account-type">Savings</div>
+                    <div class="account-type">Market Value</div>
                 </div>
             </div>
 
@@ -1308,7 +1308,7 @@
                         <div class="account-time">11 mins ago</div>
                     </div>
                     <div class="account-amount">$16,231.00</div>
-                    <div class="account-type">Styler White 401k</div>
+                    <div class="account-type">Styler White</div>
                 </div>
 
                 <div class="account-card">
@@ -1316,7 +1316,7 @@
                         <div class="loading-spinner"></div>
                     </div>
                     <div class="account-header">
-                        <div class="account-name">Fidelity</div>
+                        <div class="account-name">Fidelity Investments</div>
                         <div class="account-time">13 mins ago</div>
                     </div>
                     <div class="account-amount">$53,165.79</div>
@@ -1340,11 +1340,11 @@
                         <div class="loading-spinner"></div>
                     </div>
                     <div class="account-header">
-                        <div class="account-name">Seaf Goodman And ...</div>
+                        <div class="account-name">Seaf Goodman 401k</div>
                         <div class="account-time">11 mins ago</div>
                     </div>
                     <div class="account-amount">$75,001.98</div>
-                    <div class="account-type">Seaf Goodman 401k</div>
+                    <div class="account-type">Seaf Goodman and Associates</div>
                 </div>
             </div>
 
@@ -1363,7 +1363,7 @@
                         <div class="loading-spinner"></div>
                     </div>
                     <div class="account-header">
-                        <div class="account-name">Bonds Options - Single</div>
+                        <div class="account-name">US Treasury Note – 10 Yr</div>
                         <div class="account-time"></div>
                     </div>
                     <div class="account-amount">$3,205.58</div>
@@ -1764,13 +1764,14 @@
 
         // Simulated account data
         const accountData = {
-            "Fidelity Cash": generateAccountData(2291.90, 7),
+            "Fidelity Investments": generateAccountData(2291.90, 7),
             "Wells Fargo": generateAccountData(300.13, 7),
+            "Tech ETF Holdings": generateAccountData(815.95, 7),
             "Beneke Fabricators": generateAccountData(16231.00, 7),
             "Fidelity": generateAccountData(53165.79, 7),
             "Penthing": generateAccountData(50472.35, 7),
-            "Seaf Goodman And ...": generateAccountData(75001.98, 7),
-            "Bonds Options - Single": generateAccountData(3205.58, 7),
+            "Seaf Goodman 401k": generateAccountData(75001.98, 7),
+            "US Treasury Note – 10 Yr": generateAccountData(3205.58, 7),
         };
 
         // Generate account data
@@ -1977,7 +1978,7 @@
             const allocChart = new Chart(allocCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['US Stocks', 'International', 'Bonds', 'Cash', 'Alternatives'],
+                    labels: ['Stocks', 'Funds', 'Bonds', 'Cash', 'Alternatives'],
                     datasets: [{
                         data: [65, 12, 15, 5, 3],
                         backgroundColor: [
