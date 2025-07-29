@@ -2064,7 +2064,7 @@
             const allocCtx = document.getElementById('allocationChart').getContext('2d');
 
             // 调用后端接口获取真实资产配置数据
-            fetch('http://localhost:3000/api/asset-allocation') // 替换为实际后端接口地址
+            fetch('http://localhost:3000/api/asset_allocation') // 替换为实际后端接口地址
             .then(response => response.json())
             .then(data => {
                 // 1. 提取各类资产的总价值
@@ -2090,7 +2090,8 @@
                     data: allocationData, 
                     backgroundColor: [
                         '#f1c40f',  // Cash 配色（可自定义）
-                        '#3498db',  // Stocks 配色
+                        // '#3498db',  // Stocks 配色
+                        '#FF0000',  // Stocks 配色
                         '#2ecc71',  // Funds 配色
                         '#9b59b6'   // Bonds 配色
                     ],
