@@ -1530,15 +1530,15 @@
 
         function fetchNetWorthData() {
             // 替换为实际获取净值的后端接口地址
-            const netWorthApi = "http://localhost/api/net-worth"; 
+            const netWorthApi = "http://localhost:3000/api/net-worth"; 
             // 替换为实际获取30天变化数据的后端接口地址
-            const change30DaysApi = "http://localhost/api/change-30-days"; 
+            const change30DaysApi = "http://localhost:3000/api/change-30-days"; 
 
             // 获取净值数据
             axios.get(netWorthApi)
             .then(response => {
                     if (response.status >= 200 && response.status < 300) {
-                        const netWorthValue = response.data; // 假设接口返回直接是净值数值
+                        const netWorthValue = response.data.total_worth; // 假设接口返回直接是净值数值
                         const netWorthElement = document.querySelector('.net-worth-value');
                         netWorthElement.textContent = `$${netWorthValue}`;
                     } else {
@@ -1553,7 +1553,7 @@
             axios.get(change30DaysApi)
             .then(response => {
                     if (response.status >= 200 && response.status < 300) {
-                        const changeValue = response.data; // 假设接口返回直接是变化数值
+                        const changeValue = response.data.total_profit_pre30; // 假设接口返回直接是变化数值
                         const changeElement = document.querySelector('.change-value');
                         changeElement.textContent = `+$${changeValue}`;
                     } else {
