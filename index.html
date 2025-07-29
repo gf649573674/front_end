@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,6 +53,51 @@
             margin-right: 10px;
         }
 
+        /* —— Header 内的新闻跑马灯 —— */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .news-ticker {
+            flex: 0 1 900px;
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 1rem;
+            font-size: 0.875rem;
+        }
+
+        .header .news-ticker .ticker-content {
+            display: inline-block;
+            animation: scroll-left 50s linear infinite;
+        }
+
+        .header .news-ticker .ticker-content a {
+            color: #333;
+            text-decoration: none;
+            margin-right: 0.5rem;
+        }
+
+        .header .news-ticker .separator {
+            margin: 0 0.75rem;
+            color: #999;
+        }
+
+        /* 从右到左滚动 */
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+
+
+
         .user-nav {
             display: flex;
             align-items: center;
@@ -95,10 +141,10 @@
             overflow: hidden;
             transition: transform 0.3s ease;
         }
-        
+
         .profit-card:hover {
-  	        transform: translateY(-3px); 
-  	        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         }
 
         .profit-card::before {
@@ -263,8 +309,8 @@
         }
 
         .casm-card:hover {
-  	        transform: translateY(-3px); 
-  	        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         }
 
         .casm-card::before {
@@ -304,8 +350,8 @@
         }
 
         .income-card:hover {
-  	        transform: translateY(-3px); 
-  	        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         }
 
         .income-card::before {
@@ -489,6 +535,7 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -626,14 +673,17 @@
         /* 标题包裹容器的样式，可根据需要调整间距等 */
         .performance-title-wrap {
             display: flex;
-            flex-direction: column; /* 让标题和副标题垂直排列，也可以用 row 水平排列，看你需求 */
-            gap: 4px; /* 标题和副标题之间的间距 */
+            flex-direction: column;
+            /* 让标题和副标题垂直排列，也可以用 row 水平排列，看你需求 */
+            gap: 4px;
+            /* 标题和副标题之间的间距 */
         }
 
         /* 时间范围按钮容器样式，控制按钮排列 */
         .time-range-buttons {
             display: flex;
-            gap: 8px; /* 按钮之间的间距 */
+            gap: 8px;
+            /* 按钮之间的间距 */
         }
 
         /* 时间范围按钮基础样式（如果之前没写全可以补充） */
@@ -791,7 +841,7 @@
         }
 
         .insights-card:hover {
-            transform: translateY(-3px); 
+            transform: translateY(-3px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         }
 
@@ -907,6 +957,7 @@
             0% {
                 transform: rotate(0deg);
             }
+
             100% {
                 transform: rotate(360deg);
             }
@@ -965,44 +1016,51 @@
             .section-header {
                 min-width: auto;
             }
+
             .account-card.new-card {
                 animation: cardAppear 0.5s ease-out;
                 transform-origin: top;
             }
-            
+
             @keyframes cardAppear {
                 0% {
                     opacity: 0;
                     transform: translateY(-20px) scale(0.95);
                 }
+
                 100% {
                     opacity: 1;
                     transform: translateY(0) scale(1);
                 }
             }
-            
+
             .form-group .error {
                 border-color: #e74c3c;
             }
-            
+
             .error-message {
                 color: #e74c3c;
                 font-size: 12px;
                 margin-top: 4px;
                 display: none;
             }
-            
+
             .form-group.has-error .error-message {
                 display: block;
             }
-            
+
             .highlight-section {
                 animation: highlight 1.5s ease-in-out;
             }
-            
+
             @keyframes highlight {
-                0% { background-color: rgba(52, 152, 219, 0.1); }
-                100% { background-color: transparent; }
+                0% {
+                    background-color: rgba(52, 152, 219, 0.1);
+                }
+
+                100% {
+                    background-color: transparent;
+                }
             }
         }
     </style>
@@ -1014,6 +1072,39 @@
         <div class="header">
             <div class="logo">
                 <i class="fas fa-chart-line"></i>PortfolioManager
+            </div>
+            <!-- Static News Ticker 插入在 Logo 之后 -->
+            <div class="news-ticker">
+                <div class="ticker-content">
+                    <a href="#" target="_blank">Fed Holds Rate at 5.25%–5.50%</a><span class="separator">·</span>
+                    <a href="#" target="_blank">China Q2 GDP Up 6.3%</a><span class="separator">·</span>
+                    <a href="#" target="_blank">Apple Launches iPhone 17</a><span class="separator">·</span>
+                    <a href="#" target="_blank">Tesla Q2 Deliveries Record</a><span class="separator">·</span>
+                    <a href="#" target="_blank">EU Digital Markets Act Live</a><span class="separator">·</span>
+                    <a href="#" target="_blank">Nasdaq Hits All‑Time High</a><span class="separator">·</span>
+                    <a href="#" target="_blank">Tesla Shares Dip After Autopilot Investigation</a><span
+                        class="separator">·</span>
+                    <a href="#" target="_blank">S&P 500 Reaches Record High on Tech Rally</a><span
+                        class="separator">·</span>
+                    <a href="#" target="_blank">Amazon Stock Climbs After Announcing 20‑for‑1 Split</a><span
+                        class="separator">·</span>
+                    <a href="#" target="_blank">Microsoft Beats Q3 Revenue Estimates and Raises Guidance</a><span
+                        class="separator">·</span>
+                    <a href="#" target="_blank">Fed Holds Rate at 5.25%–5.50%</a><span class="separator">·</span>
+                    <a href="#" target="_blank">China Q2 GDP Up 6.3%</a><span class="separator">·</span>
+                    <a href="#" target="_blank">Apple Launches iPhone 17</a><span class="separator">·</span>
+                    <a href="#" target="_blank">Tesla Q2 Deliveries Record</a><span class="separator">·</span>
+                    <a href="#" target="_blank">EU Digital Markets Act Live</a><span class="separator">·</span>
+                    <a href="#" target="_blank">Nasdaq Hits All‑Time High</a><span class="separator">·</span>
+                    <a href="#" target="_blank">Tesla Shares Dip After Autopilot Investigation</a><span
+                        class="separator">·</span>
+                    <a href="#" target="_blank">S&P 500 Reaches Record High on Tech Rally</a><span
+                        class="separator">·</span>
+                    <a href="#" target="_blank">Amazon Stock Climbs After Announcing 20‑for‑1 Split</a><span
+                        class="separator">·</span>
+                    <a href="#" target="_blank">Microsoft Beats Q3 Revenue Estimates and Raises Guidance</a><span
+                        class="separator">·</span>
+                </div>
             </div>
             <div class="user-nav">
                 <i class="fas fa-bell"></i>
@@ -1135,7 +1226,7 @@
 
                 <div id="form-message" class="form-message"></div>
             </div>
-            
+
             <!-- Sell asset form -->
             <div class="cash-card">
                 <h3><i class="fas fa-minus-circle"></i> Sell Asset</h3>
@@ -1148,7 +1239,7 @@
                 </button>
                 <div id="sell-form-message" class="form-message"></div>
             </div>
-            
+
             <!-- Stocks Section -->
             <div class="section-header" data-target="Stocks-group">
                 <div class="section-title">
@@ -1256,7 +1347,7 @@
                     <div class="account-type">Seaf Goodman 401k</div>
                 </div>
             </div>
-            
+
             <!-- Bonds Section -->
             <div class="section-header" data-target="Bonds-group">
                 <div class="section-title">
@@ -1286,14 +1377,14 @@
             <div class="market-card">
                 <div class="market-header">
                     <!-- 新增一个容器包裹标题，用于控制排版 -->
-                    <div class="performance-title-wrap"> 
+                    <div class="performance-title-wrap">
                         <div class="market-title">Account Performance</div>
                         <div class="chart-subtitle">
-                    Showing: <span class="account-name">Portfolio Value</span>
+                            Showing: <span class="account-name">Portfolio Value</span>
+                        </div>
                     </div>
-                </div>
                     <!-- 时间范围按钮容器，后续用 CSS 放右上角 -->
-                    <div class="time-range-buttons"> 
+                    <div class="time-range-buttons">
                         <button class="time-range-btn active" data-range="7">7 days</button>
                         <button class="time-range-btn" data-range="30">30 days</button>
                         <button class="time-range-btn" data-range="90">3 months</button>
@@ -1323,7 +1414,7 @@
             <div class="large-market">
                 <div class="gainers-losers">
                     <div class="gainers">
-                        <div class="gl-title">YOUR GAINERS</div>
+                        <div class="gl-title">GAINERS</div>
                         <div class="gl-list">
                             <div class="gl-item">
                                 <div class="gl-name">Apple Inc</div>
@@ -1349,7 +1440,7 @@
                     </div>
 
                     <div class="losers">
-                        <div class="gl-title">YOUR LOSERS</div>
+                        <div class="gl-title">LOSERS</div>
                         <div class="gl-list">
                             <div class="gl-item">
                                 <div class="gl-name">Harris Tester Supermarkets Inc</div>
@@ -1405,16 +1496,20 @@
 
                 <div class="fee-card">
                     <p class="fee-text">
-                        You are underweight in International Stocks by <span class="fee-amount">-8.64%</span> vs baseline. Add exposure to balance global diversification.
+                        You are underweight in International Stocks by <span class="fee-amount">-8.64%</span> vs
+                        baseline. Add exposure to balance global diversification.
                     </p>
                     <p class="fee-text">
-                        You are paying <span class="fee-amount">$340.54</span> annually in fees. Switch to low-cost funds to cut 30-year costs to <span class="fee-amount">$130.72</span>.
+                        You are paying <span class="fee-amount">$340.54</span> annually in fees. Switch to low-cost
+                        funds to cut 30-year costs to <span class="fee-amount">$130.72</span>.
                     </p>
                     <p class="fee-text">
-                        You risk a skewed stock-bond ratio. Rebalance to <span class="fee-amount">60:40</span> (stocks:bonds) for moderate risk.
+                        You risk a skewed stock-bond ratio. Rebalance to <span class="fee-amount">60:40</span>
+                        (stocks:bonds) for moderate risk.
                     </p>
                     <p class="fee-text">
-                        You lack diversification. Add <span class="fee-amount">5-10%</span> alternatives (gold/REITs) to lower volatility.
+                        You lack diversification. Add <span class="fee-amount">5-10%</span> alternatives (gold/REITs) to
+                        lower volatility.
                     </p>
                 </div>
             </div>
@@ -1433,50 +1528,50 @@
             const name = document.getElementById('name').value.trim();
             const type = document.getElementById('type').value;
             const exchange = document.getElementById('exchange').value;
-            
+
             // Validate form
             let isValid = true;
             resetFormErrors();
-            
+
             if (!symbol) {
                 showError('symbol', 'Please enter investment symbol');
                 isValid = false;
             }
-            
+
             if (!name) {
                 showError('name', 'Please enter investment name');
                 isValid = false;
             }
-            
+
             if (!type) {
                 showError('type', 'Please select investment type');
                 isValid = false;
             }
-            
+
             if (!exchange) {
                 showError('exchange', 'Please select exchange');
                 isValid = false;
             }
-            
+
             if (!isValid) {
                 return;
             }
-            
+
             // Create new investment card
             createInvestmentCard(symbol, name, type, exchange);
-            
+
             // Show success message
             showFormMessage('Investment added successfully!', 'success');
-            
+
             // Reset form
             resetForm();
         }
-        
+
         // Create new investment card
         function createInvestmentCard(symbol, name, type, exchange) {
             // Determine target group
             let targetGroupId;
-            switch(type) {
+            switch (type) {
                 case 'Stock':
                     targetGroupId = 'Stocks-group';
                     break;
@@ -1489,22 +1584,22 @@
                 default:
                     targetGroupId = 'Stocks-group';
             }
-            
+
             const targetGroup = document.getElementById(targetGroupId);
-            
+
             // Ensure group is expanded
             const sectionHeader = targetGroup.previousElementSibling;
             if (!sectionHeader.classList.contains('active')) {
                 sectionHeader.classList.add('active');
                 targetGroup.style.display = 'flex';
             }
-            
+
             // Highlight section
             sectionHeader.classList.add('highlight-section');
             setTimeout(() => {
                 sectionHeader.classList.remove('highlight-section');
             }, 1500);
-            
+
             // Create new card
             const newCard = document.createElement('div');
             newCard.className = 'account-card new-card';
@@ -1519,44 +1614,44 @@
                 <div class="account-amount">$0.00</div>
                 <div class="account-type">${type} - ${exchange}</div>
             `;
-            
+
             // Add click event
-            newCard.addEventListener('click', function() {
+            newCard.addEventListener('click', function () {
                 handleAccountClick(this);
             });
-            
+
             // Add to top of group
             targetGroup.insertBefore(newCard, targetGroup.firstChild);
-            
+
             // Simulate data loading
             setTimeout(() => {
                 // Set random amount
                 const amount = (Math.random() * 10000 + 1000).toFixed(2);
                 newCard.querySelector('.account-amount').textContent = `$${amount}`;
-                
+
                 // Remove new card animation class
                 setTimeout(() => {
                     newCard.classList.remove('new-card');
                 }, 500);
             }, 800);
         }
-        
+
         // Show form error
         function showError(fieldId, message) {
             const formGroup = document.querySelector(`#${fieldId}`).closest('.form-group');
             formGroup.classList.add('has-error');
-            
+
             let errorElement = formGroup.querySelector('.error-message');
             if (!errorElement) {
                 errorElement = document.createElement('div');
                 errorElement.className = 'error-message';
                 formGroup.appendChild(errorElement);
             }
-            
+
             errorElement.textContent = message;
             document.getElementById(fieldId).classList.add('error');
         }
-        
+
         // Reset form errors
         function resetFormErrors() {
             document.querySelectorAll('.form-group').forEach(group => {
@@ -1566,24 +1661,24 @@
                     errorElement.remove();
                 }
             });
-            
+
             document.querySelectorAll('input, select').forEach(input => {
                 input.classList.remove('error');
             });
         }
-        
+
         // Show form message
         function showFormMessage(message, type) {
             const messageDiv = document.getElementById('form-message');
             messageDiv.textContent = message;
             messageDiv.className = `form-message ${type}`;
-            
+
             // Auto-hide after 3 seconds
             setTimeout(() => {
                 messageDiv.className = 'form-message';
             }, 3000);
         }
-        
+
         // Reset form
         function resetForm() {
             document.getElementById('symbol').value = '';
@@ -1591,7 +1686,7 @@
             document.getElementById('type').selectedIndex = 0;
             document.getElementById('exchange').selectedIndex = 0;
         }
-        
+
         // Sell investment function
         function sellInvestment() {
             const symbolInput = document.getElementById('sell-symbol');
@@ -1600,22 +1695,22 @@
                 symbolInput.focus();
                 return;
             }
-            
+
             const symbol = symbolInput.value.trim().toUpperCase();
-            
+
             // Simulate API call
             setTimeout(() => {
                 showSellMessage('Asset sold successfully!', 'success');
                 symbolInput.value = '';
             }, 800);
         }
-        
+
         // Show sell form message
         function showSellMessage(message, type) {
             const messageDiv = document.getElementById('sell-form-message');
             messageDiv.textContent = message;
             messageDiv.className = `form-message ${type}`;
-            
+
             // Auto-hide after 3 seconds
             setTimeout(() => {
                 messageDiv.className = 'form-message';
@@ -1943,7 +2038,7 @@
                         const accountNameElement = selectedAccountCard.querySelector('.account-name');
                         const accountName = accountNameElement.textContent;
                         // 重新生成对应时间范围的账户数据（模拟逻辑，实际换接口请求）
-                        accountData[accountName] = generateAccountData(getInitialValue(accountName), parseInt(range)); 
+                        accountData[accountName] = generateAccountData(getInitialValue(accountName), parseInt(range));
                         handleAccountClick(selectedAccountCard); // 重新更新图表等内容
                     }
                 });
@@ -1957,4 +2052,5 @@
         });
     </script>
 </body>
+
 </html>
