@@ -1230,11 +1230,18 @@
             <!-- Sell asset form -->
             <div class="cash-card">
                 <h3><i class="fas fa-minus-circle"></i> Sell Asset</h3>
-                <div class="form-group">
-                    <label for="sell-symbol">Symbol</label>
-                    <input type="text" id="sell-symbol" name="symbol" placeholder="e.g. AAPL" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sell-symbol">Symbol</label>
+                        <input type="text" id="sell-symbol" name="symbol" placeholder="e.g. AAPL" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sell-quantity">Quantity</label>
+                        <input type="text" id="sell-quantity" name="quantity" placeholder="e.g. 20" required>
+                    </div>
                 </div>
-                <button class="submit-btn" onclick="sellInvestment()">
+
+                <button class="submit-btn" onclick="sellAsset()">
                     <i class="fas fa-minus"></i> Sell
                 </button>
                 <div id="sell-form-message" class="form-message"></div>
@@ -1556,17 +1563,67 @@
             if (!isValid) {
                 return;
             }
-
+            const investment = {
+                symbol: symbolInput.value.trim().toUpperCase(),
+                name: nameInput.value.trim(),
+                type: typeSelect.value,
+                exchange: exchangeSelect.value,
+                timestamp: new Date().toISOString()
+            };
+            
             // Create new investment card
             createInvestmentCard(symbol, name, type, exchange);
-
+            apiAddedRequest(investment)
+                .then(response => {
+                    showMessage('added seccessed!', 'success');
+                    resetForm();
+                })
+                .catch(error => {
+                    showMessage('Failed: ' + error.message, 'error');
+                });
+        
             // Show success message
             showFormMessage('Investment added successfully!', 'success');
 
             // Reset form
             resetForm();
         }
-
+        function apiAddedRequest(data) {
+            const apiUrl = 'https://www.baidu.com' //后续api替换
+            return axios.post(apiUrl, data)
+            .then(response => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.data;
+                } else {
+                    throw new Error(`API请求失败,状态码: ${response.status}`);
+                }
+                resetForm();
+            })
+            .catch((error => {    
+                if (error.response) {                
+                    if (status === 400) {
+                        message = '请求数据格式错误';
+                    } else if (status === 401) {
+                        message = '未授权，请登录';
+                    } else if (status === 403) {
+                        message = '权限不足';
+                    } else if (status === 404) {
+                        message = '资源未找到';
+                    } else if (status >= 500) {
+                        message = '服务器错误';
+                    }
+                    throw new Error(`${message} (状态码: ${status})`);  
+                } else if (error.request) {
+                    // 请求已发出但没有收到响应
+                    throw new Error('无法连接到服务器，请检查网络连接');
+                } else {
+                    // 其他错误
+                    throw new Error('请求配置错误: ' + error.message);
+                }
+        }))
+        }
+        // 
+        
         // Create new investment card
         function createInvestmentCard(symbol, name, type, exchange) {
             // Determine target group
@@ -1688,21 +1745,52 @@
         }
 
         // Sell investment function
-        function sellInvestment() {
+        function sellAsset() {
             const symbolInput = document.getElementById('sell-symbol');
-            if (!symbolInput.value.trim()) {
-                showSellMessage('Please enter investment symbol', 'error');
-                symbolInput.focus();
+            const quantityInput = document.getElementById("sell-quantity")
+            let isValid = true;
+            if (!symbolInput) {
+                showError('symbol', 'Please enter investment symbol');
+                isValid = false;
+            }
+            
+            if (!quantityInput) {
+                showError('quantity', 'Please enter investment name');
+                isValid = false;
+            }
+            if(!isValid){
                 return;
             }
 
-            const symbol = symbolInput.value.trim().toUpperCase();
-
+            const asset = {
+                symbol: symbolInput.value.trim().toUpperCase(),
+                quantity: quantityInput.value.trim(),
+                timestamp: new Date().toISOString()
+            };
+            
             // Simulate API call
-            setTimeout(() => {
-                showSellMessage('Asset sold successfully!', 'success');
-                symbolInput.value = '';
-            }, 800);
+            sellAssetapi(asset)
+                .then(response => {
+                    showMessage('sell seccessed!', 'success');
+                    resetForm();
+                })
+                .catch(error => {
+                    showMessage('sell Failed: ' + error.message, 'error');
+                });
+        }
+        function sellAssetapi(data){
+            const apiUrl = 'https://www.baidu.com' //后续api替换
+            return axios.post(apiUrl, data)
+            .then(response => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.data;
+                } else {
+                    throw new Error(`API请求失败,状态码: ${response.status}`);
+                }
+                resetForm();
+            })
+
+
         }
 
         // Show sell form message
@@ -1973,35 +2061,117 @@
                 }
             });
 
-            // Initialize allocation chart
+            // 初始化分配图表（资产配置饼图）
             const allocCtx = document.getElementById('allocationChart').getContext('2d');
-            const allocChart = new Chart(allocCtx, {
+
+            // 调用后端接口获取真实资产配置数据
+            fetch('http://localhost:3000/api/asset_allocation') // 替换为实际后端接口地址
+            .then(response => response.json())
+            .then(data => {
+                // 1. 提取各类资产的总价值
+                const { stock, bond, fund, cash } = data;
+                
+                // 2. 计算总价值（用于计算占比）
+                const total = stock + bond + fund + cash;
+                
+                // 3. 计算各类资产的占比（百分比）
+                const allocationData = [
+                cash / total * 100,    // Cash 占比
+                stock / total * 100,   // Stocks 占比
+                fund / total * 100,    // Funds 占比
+                bond / total * 100     // Bonds 占比
+                ];
+                
+                // 4. 初始化图表
+                new Chart(allocCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Stocks', 'Funds', 'Bonds', 'Cash', 'Alternatives'],
+
+                    labels: ['Cash', 'Stocks', 'Funds', 'Bonds'], // 与后端字段对应
+
                     datasets: [{
-                        data: [65, 12, 15, 5, 3],
-                        backgroundColor: [
-                            '#3498db',
-                            '#2ecc71',
-                            '#9b59b6',
-                            '#f1c40f',
-                            '#e74c3c'
-                        ],
-                        borderWidth: 0
+                    data: allocationData, 
+                    backgroundColor: [
+                        '#f1c40f',  // Cash 配色（可自定义）
+                        // '#3498db',  // Stocks 配色
+                        '#FF0000',  // Stocks 配色
+                        '#2ecc71',  // Funds 配色
+                        '#9b59b6'   // Bonds 配色
+                    ],
+                    borderWidth: 0
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: {
-                            position: 'right'
-                        }
+                    legend: {
+                        position: 'right'
+                    }
                     },
                     cutout: '70%'
                 }
+                });
+            })
+            .catch(error => {
+                console.error('获取资产配置数据失败:', error);
+                // 可选：接口失败时，用模拟数据兜底
+                const mockData = [20, 50, 20, 10]; // 示例占比
+                new Chart(allocCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Cash', 'Stocks', 'Funds', 'Bonds'],
+                    datasets: [{
+                    data: mockData,
+                    backgroundColor: [
+                        '#f1c40f',  
+                        '#3498db',  
+                        '#2ecc71',  
+                        '#9b59b6'   
+                    ],
+                    borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                    },
+                    cutout: '70%'
+                }
+                });
             });
+
+            // const allocChart = new Chart(allocCtx, {
+            //     type: 'doughnut',
+            //     data: {
+            //         labels: ['US Stocks', 'International', 'Bonds', 'Cash', 'Alternatives'],
+            //         datasets: [{
+            //             data: [65, 12, 15, 5, 3],
+            //             backgroundColor: [
+            //                 '#3498db',
+            //                 '#2ecc71',
+            //                 '#9b59b6',
+            //                 '#f1c40f',
+            //                 '#e74c3c'
+            //             ],
+            //             borderWidth: 0
+            //         }]
+            //     },
+            //     options: {
+            //         responsive: true,
+            //         maintainAspectRatio: false,
+            //         plugins: {
+            //             legend: {
+            //                 position: 'right'
+            //             }
+            //         },
+            //         cutout: '70%'
+            //     }
+            // });
 
             // Collapse/expand functionality
             document.querySelectorAll('.section-header').forEach(header => {
