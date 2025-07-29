@@ -1247,6 +1247,27 @@
                 <div id="sell-form-message" class="form-message"></div>
             </div>
 
+            <!-- Buy asset form -->
+            <div class="cash-card">
+                <h3><i class="fas fa-minus-circle"></i> Buy Asset</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="buy-symbol">Symbol</label>
+                        <input type="text" id="buy-symbol" name="symbol" placeholder="e.g. AAPL" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="buy-quantity">Quantity</label>
+                        <input type="text" id="buy-quantity" name="quantity" placeholder="e.g. 20" required>
+                    </div>
+                </div>
+
+                <button class="submit-btn" onclick="buyAsset()">
+                    <i class="fas fa-minus"></i> Sell
+                </button>
+                <div id="sell-form-message" class="form-message"></div>
+            </div>
+            
+            
             <!-- Stocks Section -->
             <div class="section-header" data-target="Stocks-group">
                 <div class="section-title">
@@ -1528,6 +1549,7 @@
         let currentMarketChart = null;
         let selectedAccountCard = null;
 
+
         function fetchNetWorthData() {
             // 替换为实际获取净值的后端接口地址
             const netWorthApi = "http://localhost:3000/api/net-worth"; 
@@ -1564,7 +1586,6 @@
                     console.error('获取30天变化数据出错：', error);
                 });
         }
-
         // Add new investment function
         function addNewInvestment() {
             // Get form values
@@ -1814,6 +1835,8 @@
                 .catch(error => {
                     showMessage('sell Failed: ' + error.message, 'error');
                 });
+
+            showFormMessage('Investment added successfully!', 'success');
         }
         function sellAssetapi(data){
             const apiUrl = 'https://www.baidu.com' //后续api替换
@@ -1826,8 +1849,53 @@
                 }
                 resetForm();
             })
+        }
 
+        //buy asset
+        function buyAsset() {
+            const symbolInput = document.getElementById('buy-symbol');
+            const quantityInput = document.getElementById("buy-quantity")
+            let isValid = true;
+            if (!symbolInput) {
+                showError('symbol', 'Please enter investment symbol');
+                isValid = false;
+            }
+            
+            if (!quantityInput) {
+                showError('quantity', 'Please enter investment name');
+                isValid = false;
+            }
+            if(!isValid){
+                return;
+            }
 
+            const asset = {
+                symbol: symbolInput.value.trim().toUpperCase(),
+                quantity: quantityInput.value.trim(),
+                timestamp: new Date().toISOString()
+            };
+            
+            // Simulate API call
+            buyAssetapi(asset)
+                .then(response => {
+                    showMessage('buy seccessed!', 'success');
+                    resetForm();
+                })
+                .catch(error => {
+                    showMessage('buy Failed: ' + error.message, 'error');
+                });
+        }
+        function buyAssetapi(data){
+            const apiUrl = 'https://www.baidu.com' //后续api替换
+            return axios.post(apiUrl, data)
+            .then(response => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response.data;
+                } else {
+                    throw new Error(`API请求失败,状态码: ${response.status}`);
+                }
+                resetForm();
+            })
         }
 
         // Show sell form message
