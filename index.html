@@ -1528,6 +1528,43 @@
         let currentMarketChart = null;
         let selectedAccountCard = null;
 
+        function fetchNetWorthData() {
+            // 替换为实际获取净值的后端接口地址
+            const netWorthApi = "http://localhost/api/net-worth"; 
+            // 替换为实际获取30天变化数据的后端接口地址
+            const change30DaysApi = "http://localhost/api/change-30-days"; 
+
+            // 获取净值数据
+            axios.get(netWorthApi)
+            .then(response => {
+                    if (response.status >= 200 && response.status < 300) {
+                        const netWorthValue = response.data; // 假设接口返回直接是净值数值
+                        const netWorthElement = document.querySelector('.net-worth-value');
+                        netWorthElement.textContent = `$${netWorthValue}`;
+                    } else {
+                        throw new Error(`获取净值数据失败，状态码：${response.status}`);
+                    }
+                })
+            .catch(error => {
+                    console.error('获取净值数据出错：', error);
+                });
+
+            // 获取30天变化数据
+            axios.get(change30DaysApi)
+            .then(response => {
+                    if (response.status >= 200 && response.status < 300) {
+                        const changeValue = response.data; // 假设接口返回直接是变化数值
+                        const changeElement = document.querySelector('.change-value');
+                        changeElement.textContent = `+$${changeValue}`;
+                    } else {
+                        throw new Error(`获取30天变化数据失败，状态码：${response.status}`);
+                    }
+                })
+            .catch(error => {
+                    console.error('获取30天变化数据出错：', error);
+                });
+        }
+
         // Add new investment function
         function addNewInvestment() {
             // Get form values
@@ -2059,6 +2096,9 @@
                     }
                 }
             });
+
+            // 调用获取净值和30天变化数据的函数
+            fetchNetWorthData();
 
             // 初始化分配图表（资产配置饼图）
             const allocCtx = document.getElementById('allocationChart').getContext('2d');
