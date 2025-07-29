@@ -1877,35 +1877,114 @@
                 }
             });
 
-            // Initialize allocation chart
+            // 初始化分配图表（资产配置饼图）
             const allocCtx = document.getElementById('allocationChart').getContext('2d');
-            const allocChart = new Chart(allocCtx, {
+
+            // 调用后端接口获取真实资产配置数据
+            fetch('http://localhost:3000/api/asset-allocation') // 替换为实际后端接口地址
+            .then(response => response.json())
+            .then(data => {
+                // 1. 提取各类资产的总价值
+                const { stock, bond, fund, cash } = data;
+                
+                // 2. 计算总价值（用于计算占比）
+                const total = stock + bond + fund + cash;
+                
+                // 3. 计算各类资产的占比（百分比）
+                const allocationData = [
+                cash / total * 100,    // Cash 占比
+                stock / total * 100,   // Stocks 占比
+                fund / total * 100,    // Funds 占比
+                bond / total * 100     // Bonds 占比
+                ];
+                
+                // 4. 初始化图表
+                new Chart(allocCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['US Stocks', 'International', 'Bonds', 'Cash', 'Alternatives'],
+                    labels: ['Cash', 'Stocks', 'Funds', 'Bonds'], // 与后端字段对应
                     datasets: [{
-                        data: [65, 12, 15, 5, 3],
-                        backgroundColor: [
-                            '#3498db',
-                            '#2ecc71',
-                            '#9b59b6',
-                            '#f1c40f',
-                            '#e74c3c'
-                        ],
-                        borderWidth: 0
+                    data: allocationData, 
+                    backgroundColor: [
+                        '#f1c40f',  // Cash 配色（可自定义）
+                        '#3498db',  // Stocks 配色
+                        '#2ecc71',  // Funds 配色
+                        '#9b59b6'   // Bonds 配色
+                    ],
+                    borderWidth: 0
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: {
-                            position: 'right'
-                        }
+                    legend: {
+                        position: 'right'
+                    }
                     },
                     cutout: '70%'
                 }
+                });
+            })
+            .catch(error => {
+                console.error('获取资产配置数据失败:', error);
+                // 可选：接口失败时，用模拟数据兜底
+                const mockData = [20, 50, 20, 10]; // 示例占比
+                new Chart(allocCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Cash', 'Stocks', 'Funds', 'Bonds'],
+                    datasets: [{
+                    data: mockData,
+                    backgroundColor: [
+                        '#f1c40f',  
+                        '#3498db',  
+                        '#2ecc71',  
+                        '#9b59b6'   
+                    ],
+                    borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                    },
+                    cutout: '70%'
+                }
+                });
             });
+
+            // const allocChart = new Chart(allocCtx, {
+            //     type: 'doughnut',
+            //     data: {
+            //         labels: ['US Stocks', 'International', 'Bonds', 'Cash', 'Alternatives'],
+            //         datasets: [{
+            //             data: [65, 12, 15, 5, 3],
+            //             backgroundColor: [
+            //                 '#3498db',
+            //                 '#2ecc71',
+            //                 '#9b59b6',
+            //                 '#f1c40f',
+            //                 '#e74c3c'
+            //             ],
+            //             borderWidth: 0
+            //         }]
+            //     },
+            //     options: {
+            //         responsive: true,
+            //         maintainAspectRatio: false,
+            //         plugins: {
+            //             legend: {
+            //                 position: 'right'
+            //             }
+            //         },
+            //         cutout: '70%'
+            //     }
+            // });
 
             // Collapse/expand functionality
             document.querySelectorAll('.section-header').forEach(header => {
