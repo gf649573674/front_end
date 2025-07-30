@@ -729,6 +729,100 @@
             width: 100%;
             box-sizing: border-box;
         }
+                .large-market .scroll-container {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .large-market .scroll-content {
+            animation: scroll 25s linear infinite;
+            transition: all 0.3s ease;
+        }
+        
+        .large-market .scroll-container:hover .scroll-content {
+            animation-play-state: paused;
+        }
+        
+        @keyframes scroll {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(calc(-100% + 380px));
+            }
+        }
+        
+        .large-market .gainers-losers {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .large-market .gainers,
+        .large-market .losers {
+            flex: 1;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .large-market .gl-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+        
+        .large-market .gl-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .large-market .gl-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f2f5;
+        }
+        
+        .large-market .gl-name {
+            font-size: 14px;
+            color: #2c3e50;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .large-market .gl-value {
+            font-weight: 700;
+            font-size: 15px;
+            width: 80px;
+            text-align: right;
+        }
+        
+        .large-market .positive {
+            color: #27ae60;
+        }
+        
+        .large-market .negative {
+            color: #e74c3c;
+        }
+        
+        .large-market .info-note {
+            text-align: center;
+            color: #95a5a6;
+            margin-top: 15px;
+            font-style: italic;
+            font-size: 14px;
+        }
 
         /* Market section */
         .market-section {
@@ -1550,58 +1644,131 @@
             </div>
 
             <div class="large-market">
+                <h3>Market Performance</h3>
                 <div class="gainers-losers">
                     <div class="gainers">
-                        <div class="gl-title">GAINERS</div>
-                        <div class="gl-list">
-                            <div class="gl-item">
-                                <div class="gl-name">Apple Inc</div>
-                                <div class="gl-value positive">2.53%</div>
-                            </div>
-                            <div class="gl-item">
-                                <div class="gl-name">Flattenergy Corp</div>
-                                <div class="gl-value positive">1.66%</div>
-                            </div>
-                            <div class="gl-item">
-                                <div class="gl-name">Duke Energy Corp</div>
-                                <div class="gl-value positive">1.42%</div>
-                            </div>
-                            <div class="gl-item">
-                                <div class="gl-name">Northeast Utilities</div>
-                                <div class="gl-value positive">0.85%</div>
-                            </div>
-                            <div class="gl-item">
-                                <div class="gl-name">ITT Educational Services Inc</div>
-                                <div class="gl-value positive">0.88%</div>
+                    <div class="gl-title">GAINERS</div>
+                    <div class="scroll-container">
+                        <div class="scroll-content">
+                            <div class="gl-list">
+                                <div class="gl-item">
+                                    <div class="gl-name">Apple Inc</div>
+                                    <div class="gl-value positive">+2.53%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Flattenergy Corp</div>
+                                    <div class="gl-value positive">+1.66%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Duke Energy Corp</div>
+                                    <div class="gl-value positive">+1.42%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Northeast Utilities</div>
+                                    <div class="gl-value positive">+0.85%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">ITT Educational Services Inc</div>
+                                    <div class="gl-value positive">+0.88%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">TechGlobal Innovations</div>
+                                    <div class="gl-value positive">+1.92%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">SolarEdge Technologies</div>
+                                    <div class="gl-value positive">+1.35%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">BioPharma Solutions</div>
+                                    <div class="gl-value positive">+2.15%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Green Energy Partners</div>
+                                    <div class="gl-value positive">+0.76%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">CloudCompute Inc</div>
+                                    <div class="gl-value positive">+1.67%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">AI Future Tech</div>
+                                    <div class="gl-value positive">+3.25%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Quantum Computing Corp</div>
+                                    <div class="gl-value positive">+2.18%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Electric Vehicle Solutions</div>
+                                    <div class="gl-value positive">+1.43%</div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="losers">
-                        <div class="gl-title">LOSERS</div>
-                        <div class="gl-list">
-                            <div class="gl-item">
-                                <div class="gl-name">Harris Tester Supermarkets Inc</div>
-                                <div class="gl-value negative">-2.61%</div>
-                            </div>
-                            <div class="gl-item">
-                                <div class="gl-name">Guitport Energy Corp</div>
-                                <div class="gl-value negative">-2.01%</div>
-                            </div>
-                            <div class="gl-item">
-                                <div class="gl-name">Microsoft Corp</div>
-                                <div class="gl-value negative">-1.66%</div>
-                            </div>
-                            <div class="gl-item">
-                                <div class="gl-name">Wells Fargo & Co</div>
-                                <div class="gl-value negative">-1.57%</div>
-                            </div>
-                            <div class="gl-item">
-                                <div class="gl-name">Eastman Chemical Co</div>
-                                <div class="gl-value negative">-1.50%</div>
+                <div class="losers">
+                    <div class="gl-title">LOSERS</div>
+                    <div class="scroll-container">
+                        <div class="scroll-content">
+                            <div class="gl-list">
+                                <div class="gl-item">
+                                    <div class="gl-name">Harris Tester Supermarkets Inc</div>
+                                    <div class="gl-value negative">-2.61%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Guitport Energy Corp</div>
+                                    <div class="gl-value negative">-2.01%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Microsoft Corp</div>
+                                    <div class="gl-value negative">-1.66%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Wells Fargo & Co</div>
+                                    <div class="gl-value negative">-1.57%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Eastman Chemical Co</div>
+                                    <div class="gl-value negative">-1.50%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Retail Giants Corp</div>
+                                    <div class="gl-value negative">-1.22%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">AutoMakers United</div>
+                                    <div class="gl-value negative">-0.97%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">BankFinancial Group</div>
+                                    <div class="gl-value negative">-0.85%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">TravelServices Inc</div>
+                                    <div class="gl-value negative">-1.05%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">RealEstate Partners</div>
+                                    <div class="gl-value negative">-0.78%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Oil & Gas Exploration</div>
+                                    <div class="gl-value negative">-2.35%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Traditional Media Inc</div>
+                                    <div class="gl-value negative">-1.85%</div>
+                                </div>
+                                <div class="gl-item">
+                                    <div class="gl-name">Consumer Electronics Ltd</div>
+                                    <div class="gl-value negative">-1.27%</div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
