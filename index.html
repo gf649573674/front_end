@@ -1816,6 +1816,16 @@
                 messageDiv.className = 'form-message';
             }, 3000);
         }
+        function showFormSellMessage(message, type) {
+            const messageDiv = document.getElementById('sell-form-message');
+            messageDiv.textContent = message;
+            messageDiv.className = `form-message ${type}`;
+
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                messageDiv.className = 'form-message';
+            }, 3000);
+        }
 
         // Reset form
         function resetForm() {
@@ -1865,25 +1875,26 @@
             if (action =="Sell"){
                 sellAssetapi(asset)
                 .then(response => {
-                    showFormMessage('sell seccessed!', 'success');
+                    
+                    showFormSellMessage('sell seccessed!', 'success');
                     resetForm();
                 })
                 .catch(error => {
-                    showFormMessage('sell Failed: ' + error.message, 'error');
+                    showFormSellMessage('sell Failed: ' + error.message, 'error');
                 });
 
-                showFormMessage(' sell asset successfully!', 'success');
+                showFormSellMessage(' sell asset successfully!', 'success');
             }
             else if(action =="Buy"){
                 buyAssetapi(asset)
                 .then(response => {
-                    showFormMessage('buy seccessed!', 'success');
+                    showFormSellMessage('buy seccessed!', 'success');
                     resetForm();
                 })
                 .catch(error => {
-                    showFormMessage('buy Failed: ' + error.message, 'error');
+                    showFormSellMessage('buy Failed: ' + error.message, 'error');
                 });
-                showFormMessage('buy asset successfully!', 'success');
+                showFormSellMessage('buy asset successfully!', 'success');
             }
         }
 
