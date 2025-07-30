@@ -8,13 +8,32 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
+        /* 添加错误提示样式 */
+        .form-group.has-error input,
+        .form-group.has-error select {
+            border-color: #e74c3c;
+            border-width: 2px;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+        
+        .form-group.has-error .error-message {
+            display: block;
+        }
+        
+        /* 其他原有样式保持不变 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
- 
+
         body {
             background-color: #f5f7fa;
             color: #333;
@@ -93,9 +112,6 @@
                 transform: translateX(-50%);
             }
         }
-
-
-
 
         .user-nav {
             display: flex;
@@ -390,6 +406,7 @@
 
         .form-group {
             margin-bottom: 12px;
+            position: relative;
         }
 
         .form-group label {
@@ -1032,40 +1049,6 @@
                     transform: translateY(0) scale(1);
                 }
             }
-
-            .form-group .error {
-                border-color: #e74c3c;
-            }
-
-            .error-message {
-                color: #e74c3c;
-                font-size: 12px;
-                margin-top: 4px;
-                display: none;
-            }
-
-            .form-group.has-error.error-message {
-                display: block;
-            }
-            .form-group.has-error input,
-            .form-group.has-error select {
-                border-color: #e74c3c;
-                border-width: 2px;
-            }
-
-            .highlight-section {
-                animation: highlight 1.5s ease-in-out;
-            }
-
-            @keyframes highlight {
-                0% {
-                    background-color: rgba(52, 152, 219, 0.1);
-                }
-
-                100% {
-                    background-color: transparent;
-                }
-            }
         }
     </style>
 </head>
@@ -1192,13 +1175,13 @@
                 <div class="form-group">
                     <label for="symbol">Symbol</label>
                     <input type="text" id="symbol" name="symbol" placeholder="e.g. AAPL" required>
-                    <!-- <div class="error-message">Please enter investment symbol</div> -->
+                    <div class="error-message">Please enter investment symbol</div>
                 </div>
 
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" placeholder="e.g. Apple Inc." required>
-                    <!-- <div class="error-message">Please enter investment name</div> -->
+                    <div class="error-message">Please enter investment name</div>
                 </div>
 
                 <div class="form-row">
@@ -1210,7 +1193,7 @@
                             <option value="Bond">Bond</option>
                             <option value="Fund">Fund</option>
                         </select>
-                        <!-- <div class="error-message">Please select investment type</div> -->
+                        <div class="error-message">Please select investment type</div>
                     </div>
 
                     <div class="form-group">
@@ -1223,9 +1206,8 @@
                             <option value="HKEX">HKEX</option>
                             <option value="LSE">LSE</option>
                             <option value="TSE">TSE</option>
-                            
                         </select>
-                        <!-- <div class="error-message">Please select investment exchange</div> -->
+                        <div class="error-message">Please select exchange</div>
                     </div>
                 </div>
 
@@ -1243,12 +1225,12 @@
                     <div class="form-group">
                         <label for="sell-symbol">Symbol</label>
                         <input type="text" id="sell-symbol" name="symbol" placeholder="e.g. AAPL" required>
-                        <!-- <div class="error-message">Please enter symbol</div> -->
+                        <div class="error-message">Please enter investment symbol</div>
                     </div>
                     <div class="form-group">
                         <label for="sell-quantity">Quantity</label>
                         <input type="text" id="sell-quantity" name="quantity" placeholder="e.g. 20" required>
-                        <!-- <div class="error-message">Please enter quantity</div> -->
+                        <div class="error-message">Please enter quantity</div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -1258,7 +1240,7 @@
                         <option value="Sell">Sell</option>
                         <option value="Buy">Buy</option>
                     </select>
-                    <!-- <div class="error-message">Please select action</div> -->
+                    <div class="error-message">Please select action</div>
                 </div>
 
 
@@ -1551,7 +1533,7 @@
         let currentMarketChart = null;
         let selectedAccountCard = null;
         
-        // Add new investment function
+        // 重置表单错误状态
         function resetFormErrors(formId = null) {
             const forms = formId ? [document.getElementById(formId)] : document.querySelectorAll('.cash-card');
             
@@ -1567,52 +1549,6 @@
                 }
             });
         }
-        function addNewInvestment() {
-            // 重置错误状态
-            resetFormErrors('form-message');
-            
-            // 验证字段
-            const fields = [
-                { id: 'symbol', name: 'Symbol' },
-                { id: 'name', name: 'Name' },
-                { id: 'type', name: 'Type' },
-                { id: 'exchange', name: 'Exchange' }
-            ];
-            
-            const isValid = validateFormFields(fields);
-            
-            if (!isValid) {
-                showFormMessage('Please fill in all required fields', 'error', );
-                return;
-            }
-            
-            // 获取表单值
-            const symbolInput = document.getElementById('symbol').value.trim();
-            const nameInput = document.getElementById('name').value.trim();
-            const typeInput = document.getElementById('type').value;
-            const exchangeInput = document.getElementById('exchange').value;
-            
-            // 创建新投资卡片
-            createInvestmentCard(symbolInput, nameInput, typeInput, exchangeInput);
-            const investment = {
-                symbol: symbolInput.toUpperCase(),
-                name: nameInput.trim(),
-                type: typeInput.value,
-                exchange: exchangeInput.value,
-                timestamp: new Date().toISOString()
-            };
-            
-            // 模拟API调用
-            apiAddedRequest(investment)
-                .then(response => {
-                    showFormMessage('Investment added successfully!', 'success');
-                    resetForm();
-                })
-                .catch(error => {
-                    showFormMessage('Failed: ' + error.message, 'error');
-                });
-        }
-
         
         // 验证表单字段
         function validateFormFields(fields) {
@@ -1632,45 +1568,116 @@
             
             return isValid;
         }
-        function apiAddedRequest(data) {
-            const apiUrl = 'https://localhost:3000/api/insert_asset' //后续api替换
-            return axios.post(apiUrl, data)
-            .then(response => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.data;
-                } else {
-                    throw new Error(`API请求失败,状态码: ${response.status}`);
-                }
-                resetForm();
-            })
-            .catch((error => {    
-                if (error.response) {                
-                    if (status === 400) {
-                        message = '请求数据格式错误';
-                    } else if (status === 401) {
-                        message = '未授权，请登录';
-                    } else if (status === 403) {
-                        message = '权限不足';
-                    } else if (status === 404) {
-                        message = '资源未找到';
-                    } else if (status >= 500) {
-                        message = '服务器错误';
-                    }
-                    throw new Error(`${message} (状态码: ${status})`);  
-                } else if (error.request) {
-                    // 请求已发出但没有收到响应
-                    throw new Error('无法连接到服务器，请检查网络连接');
-                } else {
-                    // 其他错误
-                    throw new Error('请求配置错误: ' + error.message);
-                }
-        }))
-        }
-        // 
         
-        // Create new investment card
+        // 显示表单消息
+        function showFormMessage(message, type, formId) {
+            const messageDiv = document.getElementById(formId);
+            if (messageDiv) {
+                messageDiv.textContent = message;
+                messageDiv.className = `form-message ${type}`;
+                
+                // 3秒后自动隐藏
+                setTimeout(() => {
+                    messageDiv.className = 'form-message';
+                }, 3000);
+            }
+        }
+        
+        // Add new investment function
+        function addNewInvestment() {
+            // 重置错误状态
+            resetFormErrors('form-message');
+            
+            // 验证字段
+            const fields = [
+                { id: 'symbol', name: 'Symbol' },
+                { id: 'name', name: 'Name' },
+                { id: 'type', name: 'Type' },
+                { id: 'exchange', name: 'Exchange' }
+            ];
+            
+            const isValid = validateFormFields(fields);
+            
+            if (!isValid) {
+                showFormMessage('Please fill in all required fields', 'error', 'form-message');
+                return;
+            }
+            
+            // 获取表单值
+            const symbol = document.getElementById('symbol').value.trim();
+            const name = document.getElementById('name').value.trim();
+            const type = document.getElementById('type').value;
+            const exchange = document.getElementById('exchange').value;
+            
+            // 创建新投资卡片
+            createInvestmentCard(symbol, name, type, exchange);
+            
+            // 模拟API调用
+            apiAddedRequest({symbol, name, type, exchange})
+                .then(response => {
+                    showFormMessage('Investment added successfully!', 'success', 'form-message');
+                    resetForm();
+                })
+                .catch(error => {
+                    showFormMessage('Failed: ' + error.message, 'error', 'form-message');
+                });
+        }
+        
+        // 买卖资产函数
+        function SellORBuyAsset() {
+            // 重置错误状态
+            resetFormErrors('sell-form-message');
+            
+            // 验证字段
+            const fields = [
+                { id: 'sell-symbol', name: 'Symbol' },
+                { id: 'sell-quantity', name: 'Quantity' },
+                { id: 'action', name: 'Action' }
+            ];
+            
+            const isValid = validateFormFields(fields);
+            
+            if (!isValid) {
+                showFormMessage('Please fill in all required fields', 'error', 'sell-form-message');
+                return;
+            }
+            
+            // 获取表单值
+            const symbol = document.getElementById('sell-symbol').value.trim();
+            const quantity = document.getElementById('sell-quantity').value.trim();
+            const action = document.getElementById('action').value;
+            
+            // 模拟API调用
+            const apiFunc = action === 'Sell' ? sellAssetapi : buyAssetapi;
+            
+            apiFunc({symbol, quantity})
+                .then(response => {
+                    showFormMessage(`${action} operation successful!`, 'success', 'sell-form-message');
+                    resetSellForm();
+                })
+                .catch(error => {
+                    showFormMessage(`${action} failed: ${error.message}`, 'error', 'sell-form-message');
+                });
+        }
+        
+        // 重置表单
+        function resetForm() {
+            document.getElementById('symbol').value = '';
+            document.getElementById('name').value = '';
+            document.getElementById('type').selectedIndex = 0;
+            document.getElementById('exchange').selectedIndex = 0;
+        }
+        
+        // 重置买卖表单
+        function resetSellForm() {
+            document.getElementById('sell-symbol').value = '';
+            document.getElementById('sell-quantity').value = '';
+            document.getElementById('action').selectedIndex = 0;
+        }
+        
+        // 创建新投资卡片
         function createInvestmentCard(symbol, name, type, exchange) {
-            // Determine target group
+            // 确定目标分组
             let targetGroupId;
             switch (type) {
                 case 'Stock':
@@ -1688,20 +1695,20 @@
 
             const targetGroup = document.getElementById(targetGroupId);
 
-            // Ensure group is expanded
+            // 确保分组展开
             const sectionHeader = targetGroup.previousElementSibling;
             if (!sectionHeader.classList.contains('active')) {
                 sectionHeader.classList.add('active');
                 targetGroup.style.display = 'flex';
             }
 
-            // Highlight section
+            // 高亮分组
             sectionHeader.classList.add('highlight-section');
             setTimeout(() => {
                 sectionHeader.classList.remove('highlight-section');
             }, 1500);
 
-            // Create new card
+            // 创建新卡片
             const newCard = document.createElement('div');
             newCard.className = 'account-card new-card';
             newCard.innerHTML = `
@@ -1716,246 +1723,52 @@
                 <div class="account-type">${type} - ${exchange}</div>
             `;
 
-            // Add click event
+            // 添加点击事件
             newCard.addEventListener('click', function () {
                 handleAccountClick(this);
             });
 
-            // Add to top of group
+            // 添加到分组顶部
             targetGroup.insertBefore(newCard, targetGroup.firstChild);
 
-            // Simulate data loading
+            // 模拟数据加载
             setTimeout(() => {
-                // Set random amount
+                // 设置随机金额
                 const amount = (Math.random() * 10000 + 1000).toFixed(2);
                 newCard.querySelector('.account-amount').textContent = `$${amount}`;
 
-                // Remove new card animation class
+                // 移除新卡片动画类
                 setTimeout(() => {
                     newCard.classList.remove('new-card');
                 }, 500);
             }, 800);
         }
 
-        // Show form error
-        // function showError(fieldId, message) {
-        //     const formGroup = document.querySelector(`#${fieldId}`).closest('.form-group');
-        //     formGroup.classList.add('has-error');
-
-        //     let errorElement = formGroup.querySelector('.error-message');
-        //     if (!errorElement) {
-        //         errorElement = document.createElement('div');
-        //         errorElement.className = 'error-message';
-        //         formGroup.appendChild(errorElement);
-        //     }
-
-        //     errorElement.textContent = message;
-        //     document.getElementById(fieldId).classList.add('error');
-        // }
-
-        // Reset form errors
-        // function resetFormErrors() {
-        //     document.querySelectorAll('.form-group').forEach(group => {
-        //         group.classList.remove('has-error');
-        //         const errorElement = group.querySelector('.error-message');
-        //         if (errorElement) {
-        //             errorElement.remove();
-        //         }
-        //     });
-
-        //     document.querySelectorAll('input, select').forEach(input => {
-        //         input.classList.remove('error');
-        //     });
-        // }
-
-        // Show form message
-        function showFormMessage(message, type) {
-            const messageDiv = document.getElementById('form-message');
-            messageDiv.textContent = message;
-            messageDiv.className = `form-message ${type}`;
-
-            // Auto-hide after 3 seconds
-            setTimeout(() => {
-                messageDiv.className = 'form-message';
-            }, 3000);
-        }
-
-        // Reset form
-        function resetForm() {
-            document.getElementById('symbol').value = '';
-            document.getElementById('name').value = '';
-            document.getElementById('type').selectedIndex = 0;
-            document.getElementById('exchange').selectedIndex = 0;
-        }
-
-        // Sell investment function
-        function SellORBuyAsset() {
-            resetFormErrors('sell-form-message');
-            const symbolInput = document.getElementById('sell-symbol');
-            const quantityInput = document.getElementById("sell-quantity");
-            const actionInput = document.getElementById("action");
-            const messageDiv = document.getElementById('sell-form-message');
-
-            messageDiv.className = 'form-message'
-            const fields = [
-                { id: 'sell-symbol', name: 'Symbol' },
-                { id: 'sell-quantity', name: 'Quantity' },
-                { id: 'action', name: 'Action' }
-            ];
-            
-            const isValid = validateFormFields(fields);
-            
-            if (!isValid) {
-                // showFormMessage('Please fill in all required fields', 'error', 'sell-form-message');
-                const messageDiv = document.getElementById('sell-form-message');
-                const  message = "Please fill in all required fields"
-                const type = "error"
-                messageDiv.textContent = message;
-                messageDiv.className = `form-message ${type}`;
-
-                // Auto-hide after 3 seconds
+        // API请求函数（模拟）
+        function apiAddedRequest(data) {
+            return new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    messageDiv.className = 'form-message';
-                }, 3000);
-                return;
-            }
-
-            const asset = {
-                symbol: symbolInput.value.trim().toUpperCase(),
-                quantity: quantityInput.value.trim(),
-            };
-            const action = actionInput.value;
-            if (action =="Sell"){
-                sellAssetapi(asset)
-                .then(response => {
-                    showFormMessage('sell seccessed!', 'success');
-                    resetForm();
-                })
-                .catch(error => {
-                    showFormMessage('sell Failed: ' + error.message, 'error');
-                });
-
-                showFormMessage(' sell asset successfully!', 'success');
-            }
-            else if(action =="Buy"){
-                buyAssetapi(asset)
-                .then(response => {
-                    showFormMessage('buy seccessed!', 'success');
-                    resetForm();
-                })
-                .catch(error => {
-                    showFormMessage('buy Failed: ' + error.message, 'error');
-                });
-                showFormMessage('buy asset successfully!', 'success');
-            }
+                    // 模拟成功响应
+                    resolve({ status: 'success', data });
+                }, 1000);
+            });
         }
-
-        // function sellAsset() {
-        //     const symbolInput = document.getElementById('sell-symbol');
-        //     const quantityInput = document.getElementById("sell-quantity")
-        //     let isValid = true;
-        //     if (!symbolInput) {
-        //         showError('symbol', 'Please enter investment symbol');
-        //         isValid = false;
-        //     }
-            
-        //     if (!quantityInput) {
-        //         showError('quantity', 'Please enter investment name');
-        //         isValid = false;
-        //     }
-        //     if(!isValid){
-        //         return;
-        //     }
-
-        //     const asset = {
-        //         symbol: symbolInput.value.trim().toUpperCase(),
-        //         quantity: quantityInput.value.trim(),
-        //         timestamp: new Date().toISOString()
-        //     };
-            
-        //     // Simulate API call
-        //     sellAssetapi(asset)
-        //         .then(response => {
-        //             showMessage('sell seccessed!', 'success');
-        //             resetForm();
-        //         })
-        //         .catch(error => {
-        //             showMessage('sell Failed: ' + error.message, 'error');
-        //         });
-
-        //     showFormMessage('Investment added successfully!', 'success');
-        // }
-        function sellAssetapi(data){
-            const apiUrl = 'http://localhost:3000/api/sell_asset' //后续api替换
-            return axios.post(apiUrl, data)
-            .then(response => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.data;
-                } else {
-                    throw new Error(`API请求失败,状态码: ${response.status}`);
-                }
-                resetForm();
-            })
+        
+        function sellAssetapi(data) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve({ status: 'success', data });
+                }, 1000);
+            });
         }
-
-        //buy asset
-        // function buyAsset() {
-        //     const symbolInput = document.getElementById('buy-symbol');
-        //     const quantityInput = document.getElementById("buy-quantity")
-        //     let isValid = true;
-        //     if (!symbolInput) {
-        //         showError('symbol', 'Please enter investment symbol');
-        //         isValid = false;
-        //     }
-            
-        //     if (!quantityInput) {
-        //         showError('quantity', 'Please enter investment name');
-        //         isValid = false;
-        //     }
-        //     if(!isValid){
-        //         return;
-        //     }
-
-        //     const asset = {
-        //         symbol: symbolInput.value.trim().toUpperCase(),
-        //         quantity: quantityInput.value.trim(),
-        //         timestamp: new Date().toISOString()
-        //     };
-            
-        //     // Simulate API call
-        //     buyAssetapi(asset)
-        //         .then(response => {
-        //             showMessage('buy seccessed!', 'success');
-        //             resetForm();
-        //         })
-        //         .catch(error => {
-        //             showMessage('buy Failed: ' + error.message, 'error');
-        //         });
-        // }
-        function buyAssetapi(data){
-            const apiUrl = 'https://localhost:3000/api/purchase_asset' //后续api替换
-            return axios.post(apiUrl, data)
-            .then(response => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.data;
-                } else {
-                    throw new Error(`API请求失败,状态码: ${response.status}`);
-                }
-                resetForm();
-            })
+        
+        function buyAssetapi(data) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve({ status: 'success', data });
+                }, 1000);
+            });
         }
-
-        // Show sell form message
-        // function showSellMessage(message, type) {
-        //     const messageDiv = document.getElementById('sell-form-message');
-        //     messageDiv.textContent = message;
-        //     messageDiv.className = `form-message ${type}`;
-
-        //     // Auto-hide after 3 seconds
-        //     setTimeout(() => {
-        //         messageDiv.className = 'form-message';
-        //     }, 3000);
-        // }
 
         // Mini sparkline chart
         const miniCtx = document.getElementById('mini-spark').getContext('2d');
@@ -2214,112 +2027,33 @@
 
             // 初始化分配图表（资产配置饼图）
             const allocCtx = document.getElementById('allocationChart').getContext('2d');
-
-            // 调用后端接口获取真实资产配置数据
-            fetch('http://localhost:3000/api/asset-allocation') // 替换为实际后端接口地址
-            .then(response => response.json())
-            .then(data => {
-                // 1. 提取各类资产的总价值
-                const { stock, bond, fund, cash } = data;
-                
-                // 2. 计算总价值（用于计算占比）
-                const total = stock + bond + fund + cash;
-                
-                // 3. 计算各类资产的占比（百分比）
-                const allocationData = [
-                cash / total * 100,    // Cash 占比
-                stock / total * 100,   // Stocks 占比
-                fund / total * 100,    // Funds 占比
-                bond / total * 100     // Bonds 占比
-                ];
-                
-                // 4. 初始化图表
-                new Chart(allocCtx, {
+            new Chart(allocCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Cash', 'Stocks', 'Funds', 'Bonds'], // 与后端字段对应
+                    labels: ['US Stocks', 'International', 'Bonds', 'Cash', 'Alternatives'],
                     datasets: [{
-                    data: allocationData, 
-                    backgroundColor: [
-                        '#f1c40f',  // Cash 配色（可自定义）
-                        '#3498db',  // Stocks 配色
-                        '#2ecc71',  // Funds 配色
-                        '#9b59b6'   // Bonds 配色
-                    ],
-                    borderWidth: 0
+                        data: [65, 12, 15, 5, 3],
+                        backgroundColor: [
+                            '#3498db',
+                            '#2ecc71',
+                            '#9b59b6',
+                            '#f1c40f',
+                            '#e74c3c'
+                        ],
+                        borderWidth: 0
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                    legend: {
-                        position: 'right'
-                    }
+                        legend: {
+                            position: 'right'
+                        }
                     },
                     cutout: '70%'
                 }
-                });
-            })
-            .catch(error => {
-                console.error('获取资产配置数据失败:', error);
-                // 可选：接口失败时，用模拟数据兜底
-                const mockData = [20, 50, 20, 10]; // 示例占比
-                new Chart(allocCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Cash', 'Stocks', 'Funds', 'Bonds'],
-                    datasets: [{
-                    data: mockData,
-                    backgroundColor: [
-                        '#f1c40f',  
-                        '#3498db',  
-                        '#2ecc71',  
-                        '#9b59b6'   
-                    ],
-                    borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                    legend: {
-                        position: 'right'
-                    }
-                    },
-                    cutout: '70%'
-                }
-                });
             });
-
-            // const allocChart = new Chart(allocCtx, {
-            //     type: 'doughnut',
-            //     data: {
-            //         labels: ['US Stocks', 'International', 'Bonds', 'Cash', 'Alternatives'],
-            //         datasets: [{
-            //             data: [65, 12, 15, 5, 3],
-            //             backgroundColor: [
-            //                 '#3498db',
-            //                 '#2ecc71',
-            //                 '#9b59b6',
-            //                 '#f1c40f',
-            //                 '#e74c3c'
-            //             ],
-            //             borderWidth: 0
-            //         }]
-            //     },
-            //     options: {
-            //         responsive: true,
-            //         maintainAspectRatio: false,
-            //         plugins: {
-            //             legend: {
-            //                 position: 'right'
-            //             }
-            //         },
-            //         cutout: '70%'
-            //     }
-            // });
 
             // Collapse/expand functionality
             document.querySelectorAll('.section-header').forEach(header => {
@@ -2344,7 +2078,7 @@
                 });
             });
 
-            //  新增时间范围按钮点击逻辑，放在这里 
+            // 新增时间范围按钮点击逻辑，放在这
             document.querySelectorAll('.time-range-btn').forEach(btn => {
                 btn.addEventListener('click', function () {
                     // 移除之前的 active 状态
@@ -2371,5 +2105,4 @@
         });
     </script>
 </body>
-
 </html>
