@@ -2146,23 +2146,26 @@
             try {
                 // 替换为后端真实接口，动态传 assetId 和 range
                 const response = await axios.get(`http://localhost:3000/api/asset_performance?assetId=${assetId}&range=${range}`);
-                // 假设后端返回 { data: { values: [...] } } 结构，需和后端对齐
-                return response.data.values; 
+                // 假设后端返回 { labels: [...], values: [...] } 的结构
+                return {
+                    labels: response.data.labels,
+                    values: response.data.values
+                };
             } catch (error) {
                 console.error('获取资产表现数据失败:', error);
                 // 失败时返回空数组或模拟数据，避免图表崩溃
-                return []; 
+                return { labels: [], values: [] };
             }
         }
 
         // 时间范围按钮点击逻辑示例
         document.querySelectorAll('.period-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const range = this.getAttribute('data-range'); // 如 7、30、90
-                // 调用 getAccountData 时传入 range
-                getAccountData(assetId, range).then(values => {
-                updateMarketChart(values); // 用真实数据更新图表
-                });
+        btn.addEventListener('click', function() {
+            const range = this.getAttribute('data-range'); // 如 7、30、90
+            // 调用 getAccountData 时传入 range
+            getAccountData(assetId, range).then(data => {
+                updateMarketChart(data.labels, data.values); // 用真实数据更新图表
+            });
         });
 });
 
