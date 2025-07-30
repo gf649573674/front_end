@@ -1281,7 +1281,7 @@
             </div>
 
             <div class="account-group" id="Stocks-group">
-                <div class="account-card">
+                <!-- <div class="account-card">
                     <div class="loading-overlay">
                         <div class="loading-spinner"></div>
                     </div>
@@ -1315,7 +1315,7 @@
                     </div>
                     <div class="account-amount">$2,000.87</div>
                     <div class="account-type">Market Value</div>
-                </div>
+                </div> -->
             </div>
 
             <!-- Funds Section -->
@@ -1329,7 +1329,7 @@
             </div>
 
             <div class="account-group" id="Funds-group">
-                <div class="account-card">
+                <!-- <div class="account-card">
                     <div class="loading-overlay">
                         <div class="loading-spinner"></div>
                     </div>
@@ -1375,7 +1375,7 @@
                     </div>
                     <div class="account-amount">$75,001.98</div>
                     <div class="account-type">Seaf Goodman and Associates</div>
-                </div>
+                </div> -->
             </div>
 
             <!-- Bonds Section -->
@@ -1388,7 +1388,7 @@
                 </div>
             </div>
             <div class="account-group" id="Bonds-group">
-                <div class="account-card">
+                <!-- <div class="account-card">
                     <div class="loading-overlay">
                         <div class="loading-spinner"></div>
                     </div>
@@ -1398,7 +1398,7 @@
                     </div>
                     <div class="account-amount">$3,205.58</div>
                     <div class="account-type"></div>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -1551,7 +1551,65 @@
         let currentMarketChart = null;
         let selectedAccountCard = null;
 
+        // 初始化所有资产类别
+        function initCategories() {
+        // 请求所有类别（如Stocks、Funds、Bonds）
+        axios.get('http://localhost:3000/api/assets_categories')
+            .then(response => {
+            const categories = response.data.categories;
+            categories.forEach(category => {
+                // 为每个类别绑定点击事件（点击时加载数据）
+                const header = document.querySelector(`[data-target="${category}-group"]`);
+                if (header) {
+                header.addEventListener('click', () => loadAssetsByCategory(category));
+                }
+            });
+            })
+            .catch(error => {
+            console.error('获取类别失败：', error);
+            });
+        }
 
+        // 根据类别加载资产数据
+        function loadAssetsByCategory(category) {
+        const targetGroup = document.getElementById(`${category}-group`);
+        // 显示加载状态
+        targetGroup.innerHTML = '<div class="loading-overlay"><div class="loading-spinner"></div></div>';
+
+        // 请求该类别下的资产数据
+        axios.get(`http://localhost:3000/api/assets_by-category?type=${category}`)
+            .then(response => {
+            const assets = response.data.assets;
+            // 清空加载状态，渲染资产卡片
+            targetGroup.innerHTML = '';
+            assets.forEach(asset => {
+                targetGroup.appendChild(createAssetCard(asset));
+            });
+            })
+            .catch(error => {
+            console.error(`获取${category}数据失败：`, error);
+            targetGroup.innerHTML = '<div class="error-message">加载失败，请重试</div>';
+            });
+        }
+
+        // 创建资产卡片DOM元素
+        function createAssetCard(asset) {
+        const card = document.createElement('div');
+        card.className = 'account-card';
+        card.innerHTML = `
+            <div class="account-header">
+            <div class="account-name">${asset.name}</div>
+            <div class="account-time">${asset.updateTime}</div>
+            </div>
+            <div class="account-amount">$${asset.amount.toFixed(2)}</div>
+            <div class="account-type">${asset.type}</div>
+        `;
+        // 绑定点击事件（如查看详情）
+        card.addEventListener('click', () => handleAccountClick(card));
+        return card;
+        }
+
+        // 处理账户卡片点击事件
         function fetchNetWorthData() {
             // 替换为实际获取净值的后端接口地址
             const netWorthApi = "http://localhost:3000/api/net-worth"; 
@@ -2250,6 +2308,8 @@
                 }
             });
 
+            initCategories(); // 新增：初始化资产类别
+
             // 调用获取净值和30天变化数据的函数
             fetchNetWorthData();
 
@@ -2366,17 +2426,37 @@
             // });
 
             // Collapse/expand functionality
+            // document.querySelectorAll('.section-header').forEach(header => {
+            //     header.addEventListener('click', function () {
+            //         const targetId = this.getAttribute('data-target');
+            //         const targetGroup = document.getElementById(targetId);
+
+            //         this.classList.toggle('active');
+
+            //         if (targetGroup.style.display === 'flex') {
+            //             targetGroup.style.display = 'none';
+            //         } else {
+            //             targetGroup.style.display = 'flex';
+            //         }
+            //     });
+            // });
+            // 替换原有的折叠/展开逻辑
             document.querySelectorAll('.section-header').forEach(header => {
                 header.addEventListener('click', function () {
                     const targetId = this.getAttribute('data-target');
                     const targetGroup = document.getElementById(targetId);
+                    const category = targetId.replace('-group', ''); // 从ID提取类别（如Stocks）
 
+                    // 切换展开/折叠状态
                     this.classList.toggle('active');
-
-                    if (targetGroup.style.display === 'flex') {
-                        targetGroup.style.display = 'none';
-                    } else {
+                    if (this.classList.contains('active')) {
+                        // 展开时加载数据（如果尚未加载）
+                        if (targetGroup.children.length === 0) {
+                            loadAssetsByCategory(category);
+                        }
                         targetGroup.style.display = 'flex';
+                    } else {
+                        targetGroup.style.display = 'none';
                     }
                 });
             });
