@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +15,7 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
- 
+
         body {
             background-color: #f5f7fa;
             color: #333;
@@ -331,6 +332,90 @@
             font-size: 28px;
             font-weight: 700;
         }
+
+        /* —— Market Indices 卡片 —— */
+        .indices-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+            position: relative;
+            flex: 0 0 260px;
+            /* 可按需改宽度 */
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 20px;
+            justify-content: center;
+            width: 200px;
+            gap: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .indices-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 左上 Accent Bar —— 青绿色 */
+        .indices-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 400px;
+            height: 4px;
+            background: #16a085;
+            border-top-left-radius: 16px;
+        }
+
+        /* 标题行 */
+        .indices-header {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 每行数据 */
+        .indices-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            color: #2c3e50;
+            padding: 4px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .indices-row:last-child {
+            border-bottom: none;
+        }
+
+        /* 名称和值 */
+        .indices-name {
+            flex: 1;
+        }
+
+        .indices-value {
+            flex: 1;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .indices-change {
+            flex: 1;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .indices-change.positive {
+            color: #27ae60;
+        }
+
+        .indices-change.negative {
+            color: #e74c3c;
+        }
+
 
         /* Income/Spend card */
         .income-card {
@@ -1047,6 +1132,7 @@
             .form-group.has-error.error-message {
                 display: block;
             }
+
             .form-group.has-error input,
             .form-group.has-error select {
                 border-color: #e74c3c;
@@ -1133,6 +1219,28 @@
                         +$138,884
                         <canvas id="mini-spark" class="mini-spark"></canvas>
                     </div>
+                </div>
+            </div>
+
+            <div class="indices-card">
+                <div class="indices-header">
+                    <i class="fas fa-chart-line" style="margin-right:6px;color:#16a085"></i>
+                    MARKET INDICES
+                </div>
+                <div class="indices-row">
+                    <span class="indices-name">S&amp;P 500</span>
+                    <span class="indices-value">4,500.32</span>
+                    <span class="indices-change positive">+0.5%</span>
+                </div>
+                <div class="indices-row">
+                    <span class="indices-name">Dow Jones</span>
+                    <span class="indices-value">35,800.12</span>
+                    <span class="indices-change negative">-0.2%</span>
+                </div>
+                <div class="indices-row">
+                    <span class="indices-name">Nasdaq</span>
+                    <span class="indices-value">15,200.45</span>
+                    <span class="indices-change positive">+0.8%</span>
                 </div>
             </div>
 
@@ -1223,7 +1331,7 @@
                             <option value="HKEX">HKEX</option>
                             <option value="LSE">LSE</option>
                             <option value="TSE">TSE</option>
-                            
+
                         </select>
                         <!-- <div class="error-message">Please select investment exchange</div> -->
                     </div>
@@ -1268,8 +1376,8 @@
                 <div id="sell-form-message" class="form-message"></div>
             </div>
 
-            
-            
+
+
             <!-- Stocks Section -->
             <div class="section-header" data-target="Stocks-group">
                 <div class="section-title">
@@ -1554,13 +1662,13 @@
 
         function fetchNetWorthData() {
             // 替换为实际获取净值的后端接口地址
-            const netWorthApi = "http://localhost:3000/api/net-worth"; 
+            const netWorthApi = "http://localhost:3000/api/net-worth";
             // 替换为实际获取30天变化数据的后端接口地址
-            const change30DaysApi = "http://localhost:3000/api/change-30-days"; 
+            const change30DaysApi = "http://localhost:3000/api/change-30-days";
 
             // 获取净值数据
             axios.get(netWorthApi)
-            .then(response => {
+                .then(response => {
                     if (response.status >= 200 && response.status < 300) {
                         const netWorthValue = response.data.total_worth; // 假设接口返回直接是净值数值
                         const netWorthElement = document.querySelector('.net-worth-value');
@@ -1569,13 +1677,13 @@
                         throw new Error(`获取净值数据失败，状态码：${response.status}`);
                     }
                 })
-            .catch(error => {
+                .catch(error => {
                     console.error('获取净值数据出错：', error);
                 });
 
             // 获取30天变化数据
             axios.get(change30DaysApi)
-            .then(response => {
+                .then(response => {
                     if (response.status >= 200 && response.status < 300) {
                         const changeValue = response.data.total_profit_pre30; // 假设接口返回直接是变化数值
                         const changeElement = document.querySelector('.change-value');
@@ -1584,19 +1692,19 @@
                         throw new Error(`获取30天变化数据失败，状态码：${response.status}`);
                     }
                 })
-            .catch(error => {
+                .catch(error => {
                     console.error('获取30天变化数据出错：', error);
                 });
         }
         // Add new investment function
         function resetFormErrors(formId = null) {
             const forms = formId ? [document.getElementById(formId)] : document.querySelectorAll('.cash-card');
-            
+
             forms.forEach(form => {
                 form.querySelectorAll('.form-group').forEach(group => {
                     group.classList.remove('has-error');
                 });
-                
+
                 const messageDiv = form.querySelector('.form-message');
                 if (messageDiv) {
                     messageDiv.className = 'form-message';
@@ -1607,7 +1715,7 @@
         function addNewInvestment() {
             // 重置错误状态
             resetFormErrors('form-message');
-            
+
             // 验证字段
             const fields = [
                 { id: 'symbol', name: 'Symbol' },
@@ -1615,20 +1723,20 @@
                 { id: 'type', name: 'Type' },
                 { id: 'exchange', name: 'Exchange' }
             ];
-            
+
             const isValid = validateFormFields(fields);
-            
+
             if (!isValid) {
-                showFormMessage('Please fill in all required fields', 'error', );
+                showFormMessage('Please fill in all required fields', 'error',);
                 return;
             }
-            
+
             // 获取表单值
             const symbolInput = document.getElementById('symbol').value.trim();
             const nameInput = document.getElementById('name').value.trim();
             const typeInput = document.getElementById('type').value;
             const exchangeInput = document.getElementById('exchange').value;
-            
+
             // 创建新投资卡片
             createInvestmentCard(symbolInput, nameInput, typeInput, exchangeInput);
             const investment = {
@@ -1638,7 +1746,7 @@
                 exchange: exchangeInput.value,
                 timestamp: new Date().toISOString()
             };
-            
+
             // 模拟API调用
             apiAddedRequest(investment)
                 .then(response => {
@@ -1650,15 +1758,15 @@
                 });
         }
 
-        
+
         // 验证表单字段
         function validateFormFields(fields) {
             let isValid = true;
-            
+
             fields.forEach(field => {
                 const element = document.getElementById(field.id);
                 const formGroup = element.closest('.form-group');
-                
+
                 if (!element.value.trim()) {
                     formGroup.classList.add('has-error');
                     isValid = false;
@@ -1666,45 +1774,45 @@
                     formGroup.classList.remove('has-error');
                 }
             });
-            
+
             return isValid;
         }
         function apiAddedRequest(data) {
             const apiUrl = 'https://localhost:3000/api/insert_asset' //后续api替换
             return axios.post(apiUrl, data)
-            .then(response => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.data;
-                } else {
-                    throw new Error(`API请求失败,状态码: ${response.status}`);
-                }
-                resetForm();
-            })
-            .catch((error => {    
-                if (error.response) {                
-                    if (status === 400) {
-                        message = '请求数据格式错误';
-                    } else if (status === 401) {
-                        message = '未授权，请登录';
-                    } else if (status === 403) {
-                        message = '权限不足';
-                    } else if (status === 404) {
-                        message = '资源未找到';
-                    } else if (status >= 500) {
-                        message = '服务器错误';
+                .then(response => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.data;
+                    } else {
+                        throw new Error(`API请求失败,状态码: ${response.status}`);
                     }
-                    throw new Error(`${message} (状态码: ${status})`);  
-                } else if (error.request) {
-                    // 请求已发出但没有收到响应
-                    throw new Error('无法连接到服务器，请检查网络连接');
-                } else {
-                    // 其他错误
-                    throw new Error('请求配置错误: ' + error.message);
-                }
-        }))
+                    resetForm();
+                })
+                .catch((error => {
+                    if (error.response) {
+                        if (status === 400) {
+                            message = '请求数据格式错误';
+                        } else if (status === 401) {
+                            message = '未授权，请登录';
+                        } else if (status === 403) {
+                            message = '权限不足';
+                        } else if (status === 404) {
+                            message = '资源未找到';
+                        } else if (status >= 500) {
+                            message = '服务器错误';
+                        }
+                        throw new Error(`${message} (状态码: ${status})`);
+                    } else if (error.request) {
+                        // 请求已发出但没有收到响应
+                        throw new Error('无法连接到服务器，请检查网络连接');
+                    } else {
+                        // 其他错误
+                        throw new Error('请求配置错误: ' + error.message);
+                    }
+                }))
         }
         // 
-        
+
         // Create new investment card
         function createInvestmentCard(symbol, name, type, exchange) {
             // Determine target group
@@ -1839,13 +1947,13 @@
                 { id: 'sell-quantity', name: 'Quantity' },
                 { id: 'action', name: 'Action' }
             ];
-            
+
             const isValid = validateFormFields(fields);
-            
+
             if (!isValid) {
                 // showFormMessage('Please fill in all required fields', 'error', 'sell-form-message');
                 const messageDiv = document.getElementById('sell-form-message');
-                const  message = "Please fill in all required fields"
+                const message = "Please fill in all required fields"
                 const type = "error"
                 messageDiv.textContent = message;
                 messageDiv.className = `form-message ${type}`;
@@ -1862,27 +1970,27 @@
                 quantity: quantityInput.value.trim(),
             };
             const action = actionInput.value;
-            if (action =="Sell"){
+            if (action == "Sell") {
                 sellAssetapi(asset)
-                .then(response => {
-                    showFormMessage('sell seccessed!', 'success');
-                    resetForm();
-                })
-                .catch(error => {
-                    showFormMessage('sell Failed: ' + error.message, 'error');
-                });
+                    .then(response => {
+                        showFormMessage('sell seccessed!', 'success');
+                        resetForm();
+                    })
+                    .catch(error => {
+                        showFormMessage('sell Failed: ' + error.message, 'error');
+                    });
 
                 showFormMessage(' sell asset successfully!', 'success');
             }
-            else if(action =="Buy"){
+            else if (action == "Buy") {
                 buyAssetapi(asset)
-                .then(response => {
-                    showFormMessage('buy seccessed!', 'success');
-                    resetForm();
-                })
-                .catch(error => {
-                    showFormMessage('buy Failed: ' + error.message, 'error');
-                });
+                    .then(response => {
+                        showFormMessage('buy seccessed!', 'success');
+                        resetForm();
+                    })
+                    .catch(error => {
+                        showFormMessage('buy Failed: ' + error.message, 'error');
+                    });
                 showFormMessage('buy asset successfully!', 'success');
             }
         }
@@ -1895,7 +2003,7 @@
         //         showError('symbol', 'Please enter investment symbol');
         //         isValid = false;
         //     }
-            
+
         //     if (!quantityInput) {
         //         showError('quantity', 'Please enter investment name');
         //         isValid = false;
@@ -1909,7 +2017,7 @@
         //         quantity: quantityInput.value.trim(),
         //         timestamp: new Date().toISOString()
         //     };
-            
+
         //     // Simulate API call
         //     sellAssetapi(asset)
         //         .then(response => {
@@ -1922,17 +2030,17 @@
 
         //     showFormMessage('Investment added successfully!', 'success');
         // }
-        function sellAssetapi(data){
+        function sellAssetapi(data) {
             const apiUrl = 'http://localhost:3000/api/sell_asset' //后续api替换
             return axios.post(apiUrl, data)
-            .then(response => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.data;
-                } else {
-                    throw new Error(`API请求失败,状态码: ${response.status}`);
-                }
-                resetForm();
-            })
+                .then(response => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.data;
+                    } else {
+                        throw new Error(`API请求失败,状态码: ${response.status}`);
+                    }
+                    resetForm();
+                })
         }
 
         //buy asset
@@ -1944,7 +2052,7 @@
         //         showError('symbol', 'Please enter investment symbol');
         //         isValid = false;
         //     }
-            
+
         //     if (!quantityInput) {
         //         showError('quantity', 'Please enter investment name');
         //         isValid = false;
@@ -1958,7 +2066,7 @@
         //         quantity: quantityInput.value.trim(),
         //         timestamp: new Date().toISOString()
         //     };
-            
+
         //     // Simulate API call
         //     buyAssetapi(asset)
         //         .then(response => {
@@ -1969,17 +2077,17 @@
         //             showMessage('buy Failed: ' + error.message, 'error');
         //         });
         // }
-        function buyAssetapi(data){
+        function buyAssetapi(data) {
             const apiUrl = 'https://localhost:3000/api/purchase_asset' //后续api替换
             return axios.post(apiUrl, data)
-            .then(response => {
-                if (response.status >= 200 && response.status < 300) {
-                    return response.data;
-                } else {
-                    throw new Error(`API请求失败,状态码: ${response.status}`);
-                }
-                resetForm();
-            })
+                .then(response => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.data;
+                    } else {
+                        throw new Error(`API请求失败,状态码: ${response.status}`);
+                    }
+                    resetForm();
+                })
         }
 
         // Show sell form message
@@ -2258,84 +2366,84 @@
 
             // 调用后端接口获取真实资产配置数据
             fetch('http://localhost:3000/api/asset_allocation') // 替换为实际后端接口地址
-            .then(response => response.json())
-            .then(data => {
-                // 1. 提取各类资产的总价值
-                const { stock, bond, fund, cash } = data;
-                
-                // 2. 计算总价值（用于计算占比）
-                const total = stock + bond + fund + cash;
-                
-                // 3. 计算各类资产的占比（百分比）
-                const allocationData = [
-                cash / total * 100,    // Cash 占比
-                stock / total * 100,   // Stocks 占比
-                fund / total * 100,    // Funds 占比
-                bond / total * 100     // Bonds 占比
-                ];
-                
-                // 4. 初始化图表
-                new Chart(allocCtx, {
-                type: 'doughnut',
-                data: {
+                .then(response => response.json())
+                .then(data => {
+                    // 1. 提取各类资产的总价值
+                    const { stock, bond, fund, cash } = data;
 
-                    labels: ['Cash', 'Stocks', 'Funds', 'Bonds'], // 与后端字段对应
+                    // 2. 计算总价值（用于计算占比）
+                    const total = stock + bond + fund + cash;
 
-                    datasets: [{
-                    data: allocationData, 
-                    backgroundColor: [
-                        '#f1c40f',  // Cash 配色（可自定义）
-                        // '#3498db',  // Stocks 配色
-                        '#FF0000',  // Stocks 配色
-                        '#2ecc71',  // Funds 配色
-                        '#9b59b6'   // Bonds 配色
-                    ],
-                    borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                    legend: {
-                        position: 'right'
-                    }
-                    },
-                    cutout: '70%'
-                }
+                    // 3. 计算各类资产的占比（百分比）
+                    const allocationData = [
+                        cash / total * 100,    // Cash 占比
+                        stock / total * 100,   // Stocks 占比
+                        fund / total * 100,    // Funds 占比
+                        bond / total * 100     // Bonds 占比
+                    ];
+
+                    // 4. 初始化图表
+                    new Chart(allocCtx, {
+                        type: 'doughnut',
+                        data: {
+
+                            labels: ['Cash', 'Stocks', 'Funds', 'Bonds'], // 与后端字段对应
+
+                            datasets: [{
+                                data: allocationData,
+                                backgroundColor: [
+                                    '#f1c40f',  // Cash 配色（可自定义）
+                                    // '#3498db',  // Stocks 配色
+                                    '#FF0000',  // Stocks 配色
+                                    '#2ecc71',  // Funds 配色
+                                    '#9b59b6'   // Bonds 配色
+                                ],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'right'
+                                }
+                            },
+                            cutout: '70%'
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('获取资产配置数据失败:', error);
+                    // 可选：接口失败时，用模拟数据兜底
+                    const mockData = [20, 50, 20, 10]; // 示例占比
+                    new Chart(allocCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Cash', 'Stocks', 'Funds', 'Bonds'],
+                            datasets: [{
+                                data: mockData,
+                                backgroundColor: [
+                                    '#f1c40f',
+                                    '#3498db',
+                                    '#2ecc71',
+                                    '#9b59b6'
+                                ],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'right'
+                                }
+                            },
+                            cutout: '70%'
+                        }
+                    });
                 });
-            })
-            .catch(error => {
-                console.error('获取资产配置数据失败:', error);
-                // 可选：接口失败时，用模拟数据兜底
-                const mockData = [20, 50, 20, 10]; // 示例占比
-                new Chart(allocCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Cash', 'Stocks', 'Funds', 'Bonds'],
-                    datasets: [{
-                    data: mockData,
-                    backgroundColor: [
-                        '#f1c40f',  
-                        '#3498db',  
-                        '#2ecc71',  
-                        '#9b59b6'   
-                    ],
-                    borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                    legend: {
-                        position: 'right'
-                    }
-                    },
-                    cutout: '70%'
-                }
-                });
-            });
 
             // const allocChart = new Chart(allocCtx, {
             //     type: 'doughnut',
