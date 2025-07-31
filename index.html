@@ -1618,8 +1618,8 @@
                     <!-- 时间范围按钮容器，后续用 CSS 放右上角 -->
                     <div class="time-range-buttons">
                         <button class="time-range-btn active" data-range="7">7 days</button>
-                        <button class="time-range-btn" data-range="30">30 days</button>
-                        <button class="time-range-btn" data-range="90">3 months</button>
+                        <!-- <button class="time-range-btn" data-range="30">30 days</button>
+                        <button class="time-range-btn" data-range="90">3 months</button> -->
                     </div>
                 </div>
 
@@ -2422,14 +2422,89 @@
             return data;
         }
 
-        // Get account data
-        function getAccountData(accountName) {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve(accountData[accountName] || []);
-                }, 600);
-            });
+        // // Get account data
+        // function getAccountData(accountName) {
+        //     return new Promise((resolve) => {
+        //         setTimeout(() => {
+        //             resolve(accountData[accountName] || []);
+        //         }, 600);
+        //     });
+        // }
+
+        // 用 axios 或 fetch 替换模拟逻辑
+        async function getAccountData(assetId, range) {
+            try {
+                // 替换为后端真实接口，动态传 assetId 和 range
+                const response = await axios.get(`http://localhost:3000/api/asset_performance?assetId=${assetId}&range=${range}`);
+                // 假设后端返回 { labels: [...], values: [...] } 的结构
+                return {
+                    labels: response.data.labels,
+                    values: response.data.values
+                };
+            } catch (error) {
+                console.error('获取资产表现数据失败:', error);
+                // 失败时返回空数组或模拟数据，避免图表崩溃
+                return { labels: [], values: [] };
+            }
         }
+
+        // 时间范围按钮点击逻辑示例
+        // 修改时间范围按钮点击事件
+        document.querySelectorAll('.time-range-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // 移除之前的active状态
+                document.querySelectorAll('.time-range-btn').forEach(b => b.classList.remove('active'));
+                // 添加当前点击按钮的active状态
+                this.classList.add('active');
+                
+                const range = this.getAttribute('data-range');
+                
+                // 如果有选中的账户卡片，根据新的时间范围更新数据
+                if (selectedAccountCard) {
+                    const accountNameElement = selectedAccountCard.querySelector('.account-name');
+                    const accountName = accountNameElement.textContent;
+                    
+                    // 调用不同的API端点
+                    let apiUrl;
+                    if (range === '7') {
+                        apiUrl = `http://localhost:3000/api/asset_performance_7days?assetId=${accountName}`;
+                    } else if (range === '30') {
+                        apiUrl = `http://localhost:3000/api/asset_performance_30days?assetId=${accountName}`;
+                    } else if (range === '90') {
+                        apiUrl = `http://localhost:3000/api/asset_performance_90days?assetId=${accountName}`;
+                    }
+                    
+                    // 获取数据并更新图表
+                    getAccountDataFixed(apiUrl).then(data => {
+                        updateMarketChart(data.labels, data.values);
+                    });
+                }
+            });
+        });
+
+        // 修改后的获取数据函数（固定范围）
+        async function getAccountDataFixed(apiUrl) {
+            try {
+                const response = await axios.get(apiUrl);
+                return {
+                    labels: response.data.labels,
+                    values: response.data.values
+                };
+            } catch (error) {
+                console.error('获取资产表现数据失败:', error);
+                return { labels: [], values: [] };
+            }
+        }
+
+//         document.querySelectorAll('.time-range-btn').forEach(btn => {
+//         btn.addEventListener('click', function() {
+//             const range = this.getAttribute('data-range'); // 如 7、30、90
+//             // 调用 getAccountData 时传入 range
+//             getAccountData(assetId, range).then(data => {
+//                 updateMarketChart(data.labels, data.values); // 用真实数据更新图表
+//             });
+//         });
+// });
 
         // Handle account click
         async function handleAccountClick(accountCard) {
@@ -2453,15 +2528,9 @@
 
             try {
                 const data = await getAccountData(accountName);
-                const labels = data.map(item => {
-                    const date = item.date;
-                    return new Intl.DateTimeFormat('en-US', {
-                        month: 'short',
-                        day: 'numeric'
-                    }).format(date);
-                });
+                const labels = data.labels;
+                const values = data.values;
 
-                const values = data.map(item => item.value);
                 const firstValue = values[0];
                 const lastValue = values[values.length - 1];
                 const valueChange = lastValue - firstValue;
@@ -2557,10 +2626,10 @@
             currentMarketChart = new Chart(marketCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    labels: ['2025-07-25', '2025-07-26', '2025-07-27', '2025-07-28', '2025-07-29', '2025-07-30', '2025-07-31'],
                     datasets: [{
                         label: 'Portfolio Value',
-                        data: [2100000, 2150000, 2170000, 2220000, 2250000, 2300000, 2317000],
+                        data: [21000000, 21500000, 21700000, 22200000, 22500000, 23000000, 23170000],
                         borderColor: '#3498db',
                         backgroundColor: 'rgba(52, 152, 219, 0.1)',
                         borderWidth: 3,
@@ -2585,7 +2654,7 @@
                             },
                             ticks: {
                                 callback: function (value) {
-                                    return '$' + (value / 1000000).toFixed(1) + 'M';
+                                    return '$' + (value / 1000000).toFixed(1) ;
                                 }
                             }
                         },
