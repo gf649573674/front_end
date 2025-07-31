@@ -1550,7 +1550,7 @@
         // Global variables
         let currentMarketChart = null;
         let selectedAccountCard = null;
-        let currentAssetId = null;
+        //let currentAssetId = null;
 
         // 初始化所有资产类别
         function initCategories() {
@@ -2148,10 +2148,10 @@
         // }
 
         // 用 axios 或 fetch 替换模拟逻辑
-        async function getAccountData(assetId, range) {
+        async function getAccountData(accountName, range) {
             try {
                 // 替换为后端真实接口，动态传 assetId 和 range
-                const response = await axios.get(`http://localhost:3000/api/asset_performance?assetId=${assetId}&range=${range}`);
+                const response = await axios.get(`http://localhost:3000/api/asset_performance?accountName=${accountName}&range=${range}`);
                 // 假设后端返回 { labels: [...], values: [...] } 的结构
                 return {
                     labels: response.data.labels,
@@ -2201,7 +2201,7 @@
 
             const accountNameElement = accountCard.querySelector('.account-name');
             const accountName = accountNameElement.textContent;
-            currentAssetId = accountName; // 把当前选中的账户名保存下来
+            //currentAssetId = accountName; // 把当前选中的账户名保存下来
 
             const chartContainer = document.querySelector('.chart-container');
             chartContainer.classList.add('loading');
@@ -2212,7 +2212,7 @@
             document.querySelector('.time-range-btn[data-range="7"]').click();
 
             try {
-                const data = await getAccountData(currentAssetId,7);
+                const data = await getAccountData(accountName);
                 const labels = data.map(item => {
                     const date = item.date;
                     return new Intl.DateTimeFormat('en-US', {
@@ -2221,29 +2221,29 @@
                     }).format(date);
                 });
 
-                const values = data.map(item => item.value);
-                const firstValue = values[0];
-                const lastValue = values[values.length - 1];
-                const valueChange = lastValue - firstValue;
-                const percentChange = ((valueChange / firstValue) * 100).toFixed(2);
+        //         //const values = data.map(item => item.value);
+        //         const firstValue = values[0];
+        //         const lastValue = values[values.length - 1];
+        //         const valueChange = lastValue - firstValue;
+        //         const percentChange = ((valueChange / firstValue) * 100).toFixed(2);
 
-                document.getElementById('current-value').textContent = `$${lastValue.toLocaleString()}`;
-                document.getElementById('change-value').textContent = `$${valueChange.toFixed(2)}`;
+        //         document.getElementById('current-value').textContent = `$${lastValue.toLocaleString()}`;
+        //         document.getElementById('change-value').textContent = `$${valueChange.toFixed(2)}`;
 
-                const changePercentElement = document.getElementById('change-percent');
-                changePercentElement.textContent = `${percentChange}%`;
-                changePercentElement.className = `mover-change ${valueChange >= 0 ? 'positive' : 'negative'}`;
+        //         const changePercentElement = document.getElementById('change-percent');
+        //         changePercentElement.textContent = `${percentChange}%`;
+        //         changePercentElement.className = `mover-change ${valueChange >= 0 ? 'positive' : 'negative'}`;
 
-                updateMarketChart(labels, values);
+        //         updateMarketChart(labels, values);
 
-            } catch (error) {
-                console.error('Error loading account data:', error);
-                alert('Error loading account data, please try again');
-            } finally {
-                accountCard.classList.remove('loading');
-                chartContainer.classList.remove('loading');
-            }
-        }
+        //     } catch (error) {
+        //         console.error('Error loading account data:', error);
+        //         alert('Error loading account data, please try again');
+        //     } finally {
+        //         accountCard.classList.remove('loading');
+        //         chartContainer.classList.remove('loading');
+        //     }
+        // }
 
         // Update market chart
         function updateMarketChart(labels, values) {
