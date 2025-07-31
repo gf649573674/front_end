@@ -2165,12 +2165,24 @@
         }
 
         // 时间范围按钮点击逻辑示例
+        // document.querySelectorAll('.time-range-btn').forEach(btn => {
+        // btn.addEventListener('click', function() {
+        //     const range = this.getAttribute('data-range'); // 如 7、30、90
+        //     // 调用 getAccountData 时传入 range
+        //     getAccountData(assetId, range).then(data => {
+        //         updateMarketChart(data.labels, data.values); // 用真实数据更新图表
+        //     });
+        // });
+//});
         document.querySelectorAll('.time-range-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            const range = this.getAttribute('data-range'); // 如 7、30、90
-            // 调用 getAccountData 时传入 range
-            getAccountData(assetId, range).then(data => {
-                updateMarketChart(data.labels, data.values); // 用真实数据更新图表
+            const range = this.getAttribute('data-range');
+            if (!currentAssetId) {
+            console.warn('当前未选中资产，无法加载数据');
+            return;
+            }
+            getAccountData(currentAssetId, range).then(data => {
+            updateMarketChart(data.labels, data.values);
             });
         });
 });
@@ -2200,7 +2212,7 @@
             document.querySelector('.time-range-btn[data-range="7"]').click();
 
             try {
-                const data = await getAccountData(accountName);
+                const data = await getAccountData(currentAssetId,7);
                 const labels = data.map(item => {
                     const date = item.date;
                     return new Intl.DateTimeFormat('en-US', {
@@ -2522,7 +2534,7 @@
                     const accountName = accountNameElement.textContent;
 
                     // ✅ 真实请求接口
-                    getAccountData(accountName, range).then(data => {
+                    getAccountData(currentAssetId, range).then(data => {
                         updateMarketChart(data.labels, data.values);
                     });
                 }
