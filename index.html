@@ -1550,6 +1550,7 @@
         // Global variables
         let currentMarketChart = null;
         let selectedAccountCard = null;
+        let currentAssetId = null;
 
         // 初始化所有资产类别
         function initCategories() {
@@ -1585,6 +1586,11 @@
             assets.forEach(asset => {
                 targetGroup.appendChild(createAssetCard(asset));
             });
+            // 自动点击第一个账户卡片
+            const firstCard = targetGroup.querySelector('.account-card');
+            if (firstCard) {
+                firstCard.click();
+            }
             })
             .catch(error => {
             console.error(`获取${category}数据失败：`, error);
@@ -2183,11 +2189,15 @@
 
             const accountNameElement = accountCard.querySelector('.account-name');
             const accountName = accountNameElement.textContent;
+            currentAssetId = accountName; // 把当前选中的账户名保存下来
 
             const chartContainer = document.querySelector('.chart-container');
             chartContainer.classList.add('loading');
 
             document.querySelector('.chart-subtitle .account-name').textContent = accountName;
+
+            // ✅ 默认加载7天数据
+            document.querySelector('.time-range-btn[data-range="7"]').click();
 
             try {
                 const data = await getAccountData(accountName);
@@ -2521,6 +2531,8 @@
                 return data.length > 0 ? data[0].value : 0;
             }
         });
+
+        loadAssetsByCategory('Stocks');
     </script>
 </body>
 
