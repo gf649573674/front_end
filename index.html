@@ -1959,8 +1959,8 @@
             // 获取表单值
             const symbolInput = document.getElementById('symbol').value.trim();
             const nameInput = document.getElementById('name').value.trim();
-            const typeInput = document.getElementById('type').value;
-            const exchangeInput = document.getElementById('exchange').value;
+            const typeInput = document.getElementById('type');
+            const exchangeInput = document.getElementById('exchange');
 
             // 创建新投资卡片
             createInvestmentCard(symbolInput, nameInput, typeInput, exchangeInput);
@@ -1971,7 +1971,7 @@
                 exchange: exchangeInput.value,
                 timestamp: new Date().toISOString()
             };
-
+            console.log(investment);
             // 模拟API调用
             apiAddedRequest(investment)
                 .then(response => {
@@ -2204,6 +2204,7 @@
                 symbol: symbolInput.value.trim().toUpperCase(),
                 quantity: quantityInput.value.trim(),
             };
+            console.log(asset);
             const action = actionInput.value;
             if (action == "Sell") {
                 sellAssetapi(asset)
