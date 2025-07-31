@@ -2238,15 +2238,9 @@
 
             try {
                 const data = await getAccountData(accountName);
-                const labels = data.map(item => {
-                    const date = item.date;
-                    return new Intl.DateTimeFormat('en-US', {
-                        month: 'short',
-                        day: 'numeric'
-                    }).format(date);
-                });
+                const labels = data.labels;
+                const values = data.values;
 
-                const values = data.map(item => item.value);
                 const firstValue = values[0];
                 const lastValue = values[values.length - 1];
                 const valueChange = lastValue - firstValue;
