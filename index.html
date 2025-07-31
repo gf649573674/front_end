@@ -1550,7 +1550,6 @@
         // Global variables
         let currentMarketChart = null;
         let selectedAccountCard = null;
-        //let currentAssetId = null;
 
         // 初始化所有资产类别
         function initCategories() {
@@ -1586,11 +1585,6 @@
             assets.forEach(asset => {
                 targetGroup.appendChild(createAssetCard(asset));
             });
-            // 自动点击第一个账户卡片
-            const firstCard = targetGroup.querySelector('.account-card');
-            if (firstCard) {
-                firstCard.click();
-            }
             })
             .catch(error => {
             console.error(`获取${category}数据失败：`, error);
@@ -2148,10 +2142,10 @@
         // }
 
         // 用 axios 或 fetch 替换模拟逻辑
-        async function getAccountData(accountName, range) {
+        async function getAccountData(assetId, range) {
             try {
                 // 替换为后端真实接口，动态传 assetId 和 range
-                const response = await axios.get(`http://localhost:3000/api/asset_performance?accountName=${accountName}&range=${range}`);
+                const response = await axios.get(`http://localhost:3000/api/asset_performance?assetId=${assetId}&range=${range}`);
                 // 假设后端返回 { labels: [...], values: [...] } 的结构
                 return {
                     labels: response.data.labels,
@@ -2165,27 +2159,62 @@
         }
 
         // 时间范围按钮点击逻辑示例
-        // document.querySelectorAll('.time-range-btn').forEach(btn => {
-        // btn.addEventListener('click', function() {
-        //     const range = this.getAttribute('data-range'); // 如 7、30、90
-        //     // 调用 getAccountData 时传入 range
-        //     getAccountData(assetId, range).then(data => {
-        //         updateMarketChart(data.labels, data.values); // 用真实数据更新图表
-        //     });
-        // });
-//});
+        // 修改时间范围按钮点击事件
         document.querySelectorAll('.time-range-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const range = this.getAttribute('data-range');
-            if (!currentAssetId) {
-            console.warn('当前未选中资产，无法加载数据');
-            return;
-            }
-            getAccountData(currentAssetId, range).then(data => {
-            updateMarketChart(data.labels, data.values);
+            btn.addEventListener('click', function() {
+                // 移除之前的active状态
+                document.querySelectorAll('.time-range-btn').forEach(b => b.classList.remove('active'));
+                // 添加当前点击按钮的active状态
+                this.classList.add('active');
+                
+                const range = this.getAttribute('data-range');
+                
+                // 如果有选中的账户卡片，根据新的时间范围更新数据
+                if (selectedAccountCard) {
+                    const accountNameElement = selectedAccountCard.querySelector('.account-name');
+                    const accountName = accountNameElement.textContent;
+                    
+                    // 调用不同的API端点
+                    let apiUrl;
+                    if (range === '7') {
+                        apiUrl = `http://localhost:3000/api/asset_performance_7days?assetId=${accountName}`;
+                    } else if (range === '30') {
+                        apiUrl = `http://localhost:3000/api/asset_performance_30days?assetId=${accountName}`;
+                    } else if (range === '90') {
+                        apiUrl = `http://localhost:3000/api/asset_performance_90days?assetId=${accountName}`;
+                    }
+                    
+                    // 获取数据并更新图表
+                    getAccountDataFixed(apiUrl).then(data => {
+                        updateMarketChart(data.labels, data.values);
+                    });
+                }
             });
         });
-});
+
+        // 修改后的获取数据函数（固定范围）
+        async function getAccountDataFixed(apiUrl) {
+            try {
+                const response = await axios.get(apiUrl);
+                return {
+                    labels: response.data.labels,
+                    values: response.data.values
+                };
+            } catch (error) {
+                console.error('获取资产表现数据失败:', error);
+                return { labels: [], values: [] };
+            }
+        }
+
+//         document.querySelectorAll('.time-range-btn').forEach(btn => {
+//         btn.addEventListener('click', function() {
+//             const range = this.getAttribute('data-range'); // 如 7、30、90
+//             // 调用 getAccountData 时传入 range
+//             getAccountData(assetId, range).then(data => {
+//                 updateMarketChart(data.labels, data.values); // 用真实数据更新图表
+//             });
+//         });
+// });
 
         // Handle account click
         async function handleAccountClick(accountCard) {
@@ -2201,15 +2230,11 @@
 
             const accountNameElement = accountCard.querySelector('.account-name');
             const accountName = accountNameElement.textContent;
-            //currentAssetId = accountName; // 把当前选中的账户名保存下来
 
             const chartContainer = document.querySelector('.chart-container');
             chartContainer.classList.add('loading');
 
             document.querySelector('.chart-subtitle .account-name').textContent = accountName;
-
-            // ✅ 默认加载7天数据
-            document.querySelector('.time-range-btn[data-range="7"]').click();
 
             try {
                 const data = await getAccountData(accountName);
@@ -2221,29 +2246,29 @@
                     }).format(date);
                 });
 
-        //         //const values = data.map(item => item.value);
-        //         const firstValue = values[0];
-        //         const lastValue = values[values.length - 1];
-        //         const valueChange = lastValue - firstValue;
-        //         const percentChange = ((valueChange / firstValue) * 100).toFixed(2);
+                const values = data.map(item => item.value);
+                const firstValue = values[0];
+                const lastValue = values[values.length - 1];
+                const valueChange = lastValue - firstValue;
+                const percentChange = ((valueChange / firstValue) * 100).toFixed(2);
 
-        //         document.getElementById('current-value').textContent = `$${lastValue.toLocaleString()}`;
-        //         document.getElementById('change-value').textContent = `$${valueChange.toFixed(2)}`;
+                document.getElementById('current-value').textContent = `$${lastValue.toLocaleString()}`;
+                document.getElementById('change-value').textContent = `$${valueChange.toFixed(2)}`;
 
-        //         const changePercentElement = document.getElementById('change-percent');
-        //         changePercentElement.textContent = `${percentChange}%`;
-        //         changePercentElement.className = `mover-change ${valueChange >= 0 ? 'positive' : 'negative'}`;
+                const changePercentElement = document.getElementById('change-percent');
+                changePercentElement.textContent = `${percentChange}%`;
+                changePercentElement.className = `mover-change ${valueChange >= 0 ? 'positive' : 'negative'}`;
 
-        //         updateMarketChart(labels, values);
+                updateMarketChart(labels, values);
 
-        //     } catch (error) {
-        //         console.error('Error loading account data:', error);
-        //         alert('Error loading account data, please try again');
-        //     } finally {
-        //         accountCard.classList.remove('loading');
-        //         chartContainer.classList.remove('loading');
-        //     }
-        // }
+            } catch (error) {
+                console.error('Error loading account data:', error);
+                alert('Error loading account data, please try again');
+            } finally {
+                accountCard.classList.remove('loading');
+                chartContainer.classList.remove('loading');
+            }
+        }
 
         // Update market chart
         function updateMarketChart(labels, values) {
@@ -2520,26 +2545,22 @@
 
             //  新增时间范围按钮点击逻辑，放在这里 
             document.querySelectorAll('.time-range-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                // 切换 active 样式
-                document.querySelectorAll('.time-range-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-
-                const range = this.getAttribute('data-range');
-                console.log('点击时间按钮，range 是：', range);
-
-                // 如果当前有选中账户，就请求数据
-                if (selectedAccountCard) {
-                    const accountNameElement = selectedAccountCard.querySelector('.account-name');
-                    const accountName = accountNameElement.textContent;
-
-                    // ✅ 真实请求接口
-                    getAccountData(currentAssetId, range).then(data => {
-                        updateMarketChart(data.labels, data.values);
-                    });
-                }
+                btn.addEventListener('click', function () {
+                    // 移除之前的 active 状态
+                    document.querySelectorAll('.time-range-btn').forEach(b => b.classList.remove('active'));
+                    // 添加当前点击按钮的 active 状态
+                    this.classList.add('active');
+                    const range = this.getAttribute('data-range');
+                    // 如果有选中的账户卡片，根据新的时间范围更新数据
+                    if (selectedAccountCard) {
+                        const accountNameElement = selectedAccountCard.querySelector('.account-name');
+                        const accountName = accountNameElement.textContent;
+                        // 重新生成对应时间范围的账户数据（模拟逻辑，实际换接口请求）
+                        accountData[accountName] = generateAccountData(getInitialValue(accountName), parseInt(range));
+                        handleAccountClick(selectedAccountCard); // 重新更新图表等内容
+                    }
+                });
             });
-        });
 
             // 辅助函数：获取账户初始值（从模拟数据里取，实际按需调整）
             function getInitialValue(accountName) {
@@ -2547,8 +2568,6 @@
                 return data.length > 0 ? data[0].value : 0;
             }
         });
-
-        loadAssetsByCategory('Stocks');
     </script>
 </body>
 
