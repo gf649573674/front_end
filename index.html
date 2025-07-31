@@ -2003,7 +2003,7 @@
             return isValid;
         }
         function apiAddedRequest(data) {
-            const apiUrl = 'http://localhost:3000/api/insert_asset' //后续api替换
+            const apiUrl = 'https://localhost:3000/api/insert_asset' //后续api替换
             return axios.post(apiUrl, data)
                 .then(response => {
                     if (response.status >= 200 && response.status < 300) {
@@ -2318,7 +2318,7 @@
         //         });
         // }
         function buyAssetapi(data) {
-            const apiUrl = 'http://localhost:3000/api/purchase_asset' //后续api替换
+            const apiUrl = 'https://localhost:3000/api/purchase_asset' //后续api替换
             return axios.post(apiUrl, data)
                 .then(response => {
                     if (response.status >= 200 && response.status < 300) {
