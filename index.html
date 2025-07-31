@@ -1483,41 +1483,7 @@
             </div>
 
             <div class="account-group" id="Stocks-group">
-                <!-- <div class="account-card">
-                    <div class="loading-overlay">
-                        <div class="loading-spinner"></div>
-                    </div>
-                    <div class="account-header">
-                        <div class="account-name">Fidelity Investments</div>
-                        <div class="account-time">13 mins ago</div>
-                    </div>
-                    <div class="account-amount">$2,291.90</div>
-                    <div class="account-type">Brokerage Cash</div>
-                </div>
-
-                <div class="account-card">
-                    <div class="loading-overlay">
-                        <div class="loading-spinner"></div>
-                    </div>
-                    <div class="account-header">
-                        <div class="account-name">Wells Fargo</div>
-                        <div class="account-time">13 mins ago</div>
-                    </div>
-                    <div class="account-amount">$300.13</div>
-                    <div class="account-type">Linked Brokerage Account</div>
-                </div>
-
-                <div class="account-card">
-                    <div class="loading-overlay">
-                        <div class="loading-spinner"></div>
-                    </div>
-                    <div class="account-header">
-                        <div class="account-name">Tech ETF Holdings</div>
-                        <div class="account-time">13 mins ago</div>
-                    </div>
-                    <div class="account-amount">$2,000.87</div>
-                    <div class="account-type">Market Value</div>
-                </div> -->
+                
             </div>
 
             <!-- Funds Section -->
@@ -1531,53 +1497,7 @@
             </div>
 
             <div class="account-group" id="Funds-group">
-                <!-- <div class="account-card">
-                    <div class="loading-overlay">
-                        <div class="loading-spinner"></div>
-                    </div>
-                    <div class="account-header">
-                        <div class="account-name">Beneke Fabricators</div>
-                        <div class="account-time">11 mins ago</div>
-                    </div>
-                    <div class="account-amount">$16,231.00</div>
-                    <div class="account-type">Styler White</div>
-                </div>
-
-                <div class="account-card">
-                    <div class="loading-overlay">
-                        <div class="loading-spinner"></div>
-                    </div>
-                    <div class="account-header">
-                        <div class="account-name">Fidelity Investments</div>
-                        <div class="account-time">13 mins ago</div>
-                    </div>
-                    <div class="account-amount">$53,165.79</div>
-                    <div class="account-type">Fidelity Brokerage</div>
-                </div>
-
-                <div class="account-card">
-                    <div class="loading-overlay">
-                        <div class="loading-spinner"></div>
-                    </div>
-                    <div class="account-header">
-                        <div class="account-name">Penthing</div>
-                        <div class="account-time">9 mins ago</div>
-                    </div>
-                    <div class="account-amount">$50,472.35</div>
-                    <div class="account-type">IRA 2</div>
-                </div>
-
-                <div class="account-card">
-                    <div class="loading-overlay">
-                        <div class="loading-spinner"></div>
-                    </div>
-                    <div class="account-header">
-                        <div class="account-name">Seaf Goodman 401k</div>
-                        <div class="account-time">11 mins ago</div>
-                    </div>
-                    <div class="account-amount">$75,001.98</div>
-                    <div class="account-type">Seaf Goodman and Associates</div>
-                </div> -->
+                
             </div>
 
             <!-- Bonds Section -->
@@ -1590,17 +1510,7 @@
                 </div>
             </div>
             <div class="account-group" id="Bonds-group">
-                <!-- <div class="account-card">
-                    <div class="loading-overlay">
-                        <div class="loading-spinner"></div>
-                    </div>
-                    <div class="account-header">
-                        <div class="account-name">US Treasury Note – 10 Yr</div>
-                        <div class="account-time"></div>
-                    </div>
-                    <div class="account-amount">$3,205.58</div>
-                    <div class="account-type"></div>
-                </div> -->
+                
             </div>
         </div>
 
@@ -1825,6 +1735,12 @@
         // Global variables
         let currentMarketChart = null;
         let selectedAccountCard = null;
+
+        const apiMap = {
+            '7': 'asset_performance_7days',
+            '30': 'asset_performance_30days',
+            '90': 'asset_performance_90days'
+        };
 
         // 初始化所有资产类别
         function initCategories() {
@@ -2422,59 +2338,21 @@
             return data;
         }
 
-        // // Get account data
-        // function getAccountData(accountName) {
-        //     return new Promise((resolve) => {
-        //         setTimeout(() => {
-        //             resolve(accountData[accountName] || []);
-        //         }, 600);
-        //     });
-        // }
-
-        // 用 axios 或 fetch 替换模拟逻辑
-        async function getAccountData(assetId, range) {
-            try {
-                // 替换为后端真实接口，动态传 assetId 和 range
-                const response = await axios.get(`http://localhost:3000/api/asset_performance?assetId=${assetId}&range=${range}`);
-                // 假设后端返回 { labels: [...], values: [...] } 的结构
-                return {
-                    labels: response.data.labels,
-                    values: response.data.values
-                };
-            } catch (error) {
-                console.error('获取资产表现数据失败:', error);
-                // 失败时返回空数组或模拟数据，避免图表崩溃
-                return { labels: [], values: [] };
-            }
-        }
+  
 
         // 时间范围按钮点击逻辑示例
-        // 修改时间范围按钮点击事件
         document.querySelectorAll('.time-range-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                // 移除之前的active状态
+            btn.addEventListener('click', function () {
                 document.querySelectorAll('.time-range-btn').forEach(b => b.classList.remove('active'));
-                // 添加当前点击按钮的active状态
                 this.classList.add('active');
-                
+
                 const range = this.getAttribute('data-range');
-                
-                // 如果有选中的账户卡片，根据新的时间范围更新数据
+
                 if (selectedAccountCard) {
-                    const accountNameElement = selectedAccountCard.querySelector('.account-name');
-                    const accountName = accountNameElement.textContent;
-                    
-                    // 调用不同的API端点
-                    let apiUrl;
-                    if (range === '7') {
-                        apiUrl = `http://localhost:3000/api/asset_performance_7days?assetId=${accountName}`;
-                    } else if (range === '30') {
-                        apiUrl = `http://localhost:3000/api/asset_performance_30days?assetId=${accountName}`;
-                    } else if (range === '90') {
-                        apiUrl = `http://localhost:3000/api/asset_performance_90days?assetId=${accountName}`;
-                    }
-                    
-                    // 获取数据并更新图表
+                    const accountName = selectedAccountCard.querySelector('.account-name').textContent;
+                    const apiPath = apiMap[range];  // 映射路径
+                    const apiUrl = `http://localhost:3000/api/${apiPath}?assetId=${accountName}`;
+
                     getAccountDataFixed(apiUrl).then(data => {
                         updateMarketChart(data.labels, data.values);
                     });
@@ -2828,23 +2706,54 @@
             });
 
             //  新增时间范围按钮点击逻辑，放在这里 
+            // 时间范围按钮点击事件绑定
             document.querySelectorAll('.time-range-btn').forEach(btn => {
                 btn.addEventListener('click', function () {
-                    // 移除之前的 active 状态
+                    // 1. UI 切换 active 样式
                     document.querySelectorAll('.time-range-btn').forEach(b => b.classList.remove('active'));
-                    // 添加当前点击按钮的 active 状态
                     this.classList.add('active');
+
+                    // 2. 获取按钮 data-range 属性值：7、30、90
                     const range = this.getAttribute('data-range');
-                    // 如果有选中的账户卡片，根据新的时间范围更新数据
+
+                    // 3. 获取选中的账户 ID（或名称）
                     if (selectedAccountCard) {
-                        const accountNameElement = selectedAccountCard.querySelector('.account-name');
-                        const accountName = accountNameElement.textContent;
-                        // 重新生成对应时间范围的账户数据（模拟逻辑，实际换接口请求）
-                        accountData[accountName] = generateAccountData(getInitialValue(accountName), parseInt(range));
-                        handleAccountClick(selectedAccountCard); // 重新更新图表等内容
+                        const accountName = selectedAccountCard.querySelector('.account-name').textContent;
+
+                        // 4. 生成对应的 API 接口地址
+                        let apiUrl = '';
+                        if (range === '7') {
+                            apiUrl = `http://localhost:3000/api/asset_performance_7days?assetId=${accountName}`;
+                        } else if (range === '30') {
+                            apiUrl = `http://localhost:3000/api/asset_performance_30days?assetId=${accountName}`;
+                        } else if (range === '90') {
+                            apiUrl = `http://localhost:3000/api/asset_performance_90days?assetId=${accountName}`;
+                        }
+
+                        // 5. 获取数据并更新图表
+                        getAccountDataFixed(apiUrl).then(data => {
+                            updateMarketChart(data.labels, data.values);
+                        });
                     }
                 });
             });
+            // document.querySelectorAll('.time-range-btn').forEach(btn => {
+            //     btn.addEventListener('click', function () {
+            //         // 移除之前的 active 状态
+            //         document.querySelectorAll('.time-range-btn').forEach(b => b.classList.remove('active'));
+            //         // 添加当前点击按钮的 active 状态
+            //         this.classList.add('active');
+            //         const range = this.getAttribute('data-range');
+            //         // 如果有选中的账户卡片，根据新的时间范围更新数据
+            //         if (selectedAccountCard) {
+            //             const accountNameElement = selectedAccountCard.querySelector('.account-name');
+            //             const accountName = accountNameElement.textContent;
+            //             // 重新生成对应时间范围的账户数据（模拟逻辑，实际换接口请求）
+            //             accountData[accountName] = generateAccountData(getInitialValue(accountName), parseInt(range));
+            //             handleAccountClick(selectedAccountCard); // 重新更新图表等内容
+            //         }
+            //     });
+            // });
 
             // 辅助函数：获取账户初始值（从模拟数据里取，实际按需调整）
             function getInitialValue(accountName) {
