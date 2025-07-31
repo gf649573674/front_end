@@ -2508,22 +2508,26 @@
 
             //  新增时间范围按钮点击逻辑，放在这里 
             document.querySelectorAll('.time-range-btn').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    // 移除之前的 active 状态
-                    document.querySelectorAll('.time-range-btn').forEach(b => b.classList.remove('active'));
-                    // 添加当前点击按钮的 active 状态
-                    this.classList.add('active');
-                    const range = this.getAttribute('data-range');
-                    // 如果有选中的账户卡片，根据新的时间范围更新数据
-                    if (selectedAccountCard) {
-                        const accountNameElement = selectedAccountCard.querySelector('.account-name');
-                        const accountName = accountNameElement.textContent;
-                        // 重新生成对应时间范围的账户数据（模拟逻辑，实际换接口请求）
-                        accountData[accountName] = generateAccountData(getInitialValue(accountName), parseInt(range));
-                        handleAccountClick(selectedAccountCard); // 重新更新图表等内容
-                    }
-                });
+            btn.addEventListener('click', function () {
+                // 切换 active 样式
+                document.querySelectorAll('.time-range-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const range = this.getAttribute('data-range');
+                console.log('点击时间按钮，range 是：', range);
+
+                // 如果当前有选中账户，就请求数据
+                if (selectedAccountCard) {
+                    const accountNameElement = selectedAccountCard.querySelector('.account-name');
+                    const accountName = accountNameElement.textContent;
+
+                    // ✅ 真实请求接口
+                    getAccountData(accountName, range).then(data => {
+                        updateMarketChart(data.labels, data.values);
+                    });
+                }
             });
+        });
 
             // 辅助函数：获取账户初始值（从模拟数据里取，实际按需调整）
             function getInitialValue(accountName) {
