@@ -1416,8 +1416,8 @@
                     <!-- 时间范围按钮容器，后续用 CSS 放右上角 -->
                     <div class="time-range-buttons">
                         <button class="time-range-btn active" data-range="7">7 days</button>
-                        <button class="time-range-btn" data-range="30">30 days</button>
-                        <button class="time-range-btn" data-range="90">3 months</button>
+                        <!-- <button class="time-range-btn" data-range="30">30 days</button>
+                        <button class="time-range-btn" data-range="90">3 months</button> -->
                     </div>
                 </div>
 
@@ -2336,10 +2336,10 @@
             currentMarketChart = new Chart(marketCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    labels: ['2025-07-25', '2025-07-26', '2025-07-27', '2025-07-28', '2025-07-29', '2025-07-30', '2025-07-31'],
                     datasets: [{
                         label: 'Portfolio Value',
-                        data: [2100000, 2150000, 2170000, 2220000, 2250000, 2300000, 2317000],
+                        data: [21000000, 21500000, 21700000, 22200000, 22500000, 23000000, 23170000],
                         borderColor: '#3498db',
                         backgroundColor: 'rgba(52, 152, 219, 0.1)',
                         borderWidth: 3,
@@ -2364,7 +2364,7 @@
                             },
                             ticks: {
                                 callback: function (value) {
-                                    return '$' + (value / 1000000).toFixed(1) + 'M';
+                                    return '$' + (value / 1000000).toFixed(1) ;
                                 }
                             }
                         },
